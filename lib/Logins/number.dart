@@ -90,6 +90,7 @@ class _NumberPageState extends State<NumberPage> {
                       )
                   ),
 
+
                   SizedBox(height: 30,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
