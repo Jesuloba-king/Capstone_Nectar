@@ -1,3 +1,4 @@
+import 'package:capstone/Logins/verification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -52,46 +53,62 @@ class _NumberPageState extends State<NumberPage> {
                         fontStyle: FontStyle.normal, fontWeight: FontWeight.w600
                     ),),
                   const SizedBox(height: 30,),
-                  //International phone number field
-                  Form(
-                    key: formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InternationalPhoneNumberInput(
-                            onInputChanged: (PhoneNumber number) {
-                              print(number.phoneNumber);
-                            },
-                            onInputValidated: (bool value) {
-                              print(value);
-                            },
-                            selectorConfig: const SelectorConfig(
-                              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                            ),
-                            autoValidateMode: AutovalidateMode.disabled,
-                            selectorTextStyle: const TextStyle(color: Colors.black),
-                            initialValue: number,
-                            textFieldController: controller,
-                            formatInput: false,
-                            keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: true),
-                            inputBorder: const OutlineInputBorder(),
-                            onSaved: (PhoneNumber number) {
-                              print('On Saved: $number');
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              formKey.currentState?.validate();
-                            },
-                            child: Text('Validate'),
-                          ),
-                        ],
-                      )
+
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)
+                      {
+                        return const VerificationPage();
+                      }));
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      padding: const EdgeInsets.all(20),
+                      decoration: const BoxDecoration(
+                        color: Colors.black26,
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: const Text(
+                        "Enter your phone number",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'Gilroy',
+                            color: Colors.black),
+                      ),
+                    ),
                   ),
 
+                  // International phone number field....
+                  // Form(
+                  //   key: formKey,
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         InternationalPhoneNumberInput(
+                  //           onInputChanged: (PhoneNumber number) {
+                  //             print(number.phoneNumber);
+                  //           },
+                  //           onInputValidated: (bool value) {
+                  //             print(value);
+                  //           },
+                  //           formatInput: false,
+                  //           keyboardType:
+                  //           const TextInputType.numberWithOptions(signed: true, decimal: true),
+                  //           inputBorder: const OutlineInputBorder(),
+                  //           onSaved: (PhoneNumber number) {
+                  //             print('On Saved: $number');
+                  //           },
+                  //         ),
+                  //       ],
+                  //     )
+                  // ),
 
-                  SizedBox(height: 30,),
+
+                  const SizedBox(height: 30,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -108,7 +125,7 @@ class _NumberPageState extends State<NumberPage> {
                   //continue with Google button
                   CupertinoButton(
                       color: const Color(0xff5383EC),
-                      borderRadius: const BorderRadius.all(Radius.circular(19)),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -127,7 +144,7 @@ class _NumberPageState extends State<NumberPage> {
                   //continue with facebook button
                   CupertinoButton(
                       color: const Color(0xff4A66AC),
-                      borderRadius: const BorderRadius.all(Radius.circular(19)),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
