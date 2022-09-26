@@ -103,9 +103,13 @@ class _VerificationPageState extends State<VerificationPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.small(onPressed: (){
-        formKey.currentState?.validate();
-        Navigator.push(context, MaterialPageRoute(builder: (context){
-          return LocationPage();}));
+        if (formKey.currentState!.validate()){
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return LocationPage();}));
+        }
+        else{
+          print("validation unsuccessful");
+        }
         },
         child: Icon(CupertinoIcons.arrow_right_circle),
         backgroundColor: const Color(0xff53B175),
