@@ -103,14 +103,16 @@ class _NumberPageState extends State<NumberPage> {
                         ),),
                     ],
                   ),
-                  const SizedBox(height: 30,),
+                  const SizedBox(height: 20,),
+
+                  //continue with Google button
                   CupertinoButton(
                       color: const Color(0xff5383EC),
                       borderRadius: const BorderRadius.all(Radius.circular(19)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Image.asset("assets/images/pepper.png", height: 30, width: 30,),
+                          Image.asset("assets/images/google.png", height: 30, width: 30,),
                           const Text("Continue with Google",
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -120,14 +122,16 @@ class _NumberPageState extends State<NumberPage> {
                         ],
                       ),
                       onPressed: (){}),
-                  const SizedBox(height: 30,),
+                  const SizedBox(height: 20,),
+
+                  //continue with facebook button
                   CupertinoButton(
                       color: const Color(0xff4A66AC),
                       borderRadius: const BorderRadius.all(Radius.circular(19)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Image.asset("assets/images/pepper.png", height: 30, width: 30,),
+                          Image.asset("assets/images/fb.png", height: 30, width: 30,),
                            const Text("Continue with Facebook",
                             textAlign: TextAlign.center,
                             style: TextStyle(
