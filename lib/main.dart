@@ -63,8 +63,7 @@ class _OnboardPageState extends State<OnboardPage> {
                 children: [
                   //nectar logo and text
                   Image.asset("assets/images/nectar.png"),
-                  const Text(
-                    "online groceriet",
+                  const Text("online groceries",
                     style: TextStyle(
                       letterSpacing: 5.6,
                       fontFamily: "Gilroy",

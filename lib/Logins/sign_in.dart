@@ -26,7 +26,13 @@ class _SignInPageState extends State<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               //white carrot logo
-              Image.asset("assets/images/logo.png",),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(padding: EdgeInsets.only(left: 20, right: 10)),
+                  Image.asset("assets/images/logo.png",),
+                ],
+              ),
               const SizedBox(height: 10,),
               const Text("Welcome \n to our store",
               textAlign: TextAlign.center,

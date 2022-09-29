@@ -54,6 +54,7 @@ class _NumberPageState extends State<NumberPage> {
                     ),),
                   const SizedBox(height: 30,),
 
+                  //Enter Phone Number Button
                   GestureDetector(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)
@@ -66,7 +67,7 @@ class _NumberPageState extends State<NumberPage> {
                       height: 60,
                       padding: const EdgeInsets.all(20),
                       decoration: const BoxDecoration(
-                        color: Colors.black26,
+                        color: Colors.transparent,
                         shape: BoxShape.rectangle,
                       ),
                       child: const Text(

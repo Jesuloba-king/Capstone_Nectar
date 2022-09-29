@@ -81,14 +81,6 @@ class _VerificationPageState extends State<VerificationPage> {
                               print('On Saved: $number');
                             },
                           ),
-
-                          //Elevated button - validate...
-                          // ElevatedButton(
-                          //   onPressed: () {
-                          //     formKey.currentState?.validate();
-                          //   },
-                          //   child: Text('Validate'),
-                          // ),
                         ],
                       )
                   ),
@@ -102,17 +94,25 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton.small(onPressed: (){
-        if (formKey.currentState!.validate()){
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return LocationPage();}));
-        }
-        else{
-          print("validation unsuccessful");
-        }
-        },
-        child: Icon(CupertinoIcons.arrow_right_circle),
-        backgroundColor: const Color(0xff53B175),
+      floatingActionButton: Container(
+        height: 50,
+        width: 50,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xff53B175),
+        ),
+        child: FloatingActionButton.small(onPressed: (){
+          if (formKey.currentState!.validate()){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return const LocationPage();}));
+          }
+          else{
+            print("validation unsuccessful");
+          }
+          },
+          child: const Icon(CupertinoIcons.arrow_right_circle, size: 35,),
+          // backgroundColor: const Color(0xff53B175),
+        ),
       ) ,
     );
   }
