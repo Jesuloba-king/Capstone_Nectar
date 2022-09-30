@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:capstone/models/cart.dart';
 import 'package:capstone/models/explore.dart';
 import 'package:capstone/models/favorite.dart';
@@ -50,26 +52,47 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
         selectedLabelStyle: const TextStyle(fontFamily: "Gilroy"),
         unselectedItemColor: Colors.black,
         unselectedLabelStyle: const TextStyle(fontFamily: "Gilroy"),
-        iconSize: 35,
-        items: const [
+        iconSize: 40,
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
+            icon: Image.asset(
+              "assets/images/storeIcon.gif",
+              height: 50,
+              width: 50,
+            ),
             label: "Shop",
           ),
+          // ignore: prefer_const_constructors
           BottomNavigationBarItem(
-            icon: Icon(Icons.manage_search_sharp),
+            icon: Image.asset(
+              "assets/images/discover.gif",
+              height: 50,
+              width: 50,
+            ),
             label: "Explore",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.shopping_cart),
+            icon: Image.asset(
+              "assets/images/cart.gif",
+              height: 45,
+              width: 50,
+            ),
             label: "Cart",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline_sharp),
+            icon: Image.asset(
+              "assets/images/favorite.gif",
+              height: 50,
+              width: 50,
+            ),
             label: "Favorite",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_sharp),
+            icon: Image.asset(
+              "assets/images/account.gif",
+              height: 50,
+              width: 50,
+            ),
             label: "Account",
           ),
         ],
