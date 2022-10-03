@@ -1,11 +1,10 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:capstone/models/cart.dart';
 import 'package:capstone/models/explore.dart';
 import 'package:capstone/models/favorite.dart';
 import 'package:capstone/models/shop.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../models/account.dart';
 
 class HomeScreenPage extends StatefulWidget {
   const HomeScreenPage({Key? key}) : super(key: key);
@@ -30,13 +29,14 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
         child: Center(
       child: Text("Cart"),
     )),
-    const FavoritePage(
-        child: Center(
+    FavoritePage(
+        child: const Center(
       child: Text("Favorite"),
     )),
-    const Center(
+    const AccountPage(
+        child: Center(
       child: Text("Account"),
-    ),
+    )),
   ];
 
   @override
@@ -62,7 +62,6 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
             ),
             label: "Shop",
           ),
-          // ignore: prefer_const_constructors
           BottomNavigationBarItem(
             icon: Image.asset(
               "assets/images/discover.gif",
