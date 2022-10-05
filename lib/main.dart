@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:capstone/Logins/sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations;
+  await Firebase.initializeApp();
   runApp(const NectarApp());
 }
 
@@ -36,13 +41,12 @@ class OnboardPage extends StatefulWidget {
 class _OnboardPageState extends State<OnboardPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Timer(const Duration(seconds: 5),
-        ()=> Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context)=> const SignInPage()))
-    );
+    Timer(
+        const Duration(seconds: 5),
+        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => const SignInPage())));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +61,16 @@ class _OnboardPageState extends State<OnboardPage> {
             children: [
               //white carrot logo
               Image.asset("assets/images/logo.png"),
-              const SizedBox(width: 12,),
+              const SizedBox(
+                width: 12,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //nectar logo and text
                   Image.asset("assets/images/nectar.png"),
-                  const Text("online groceries",
+                  const Text(
+                    "online groceries",
                     style: TextStyle(
                       letterSpacing: 5.6,
                       fontFamily: "Gilroy",
