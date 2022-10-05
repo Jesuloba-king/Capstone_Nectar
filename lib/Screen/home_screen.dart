@@ -3,7 +3,6 @@ import 'package:capstone/Screen/cart_page.dart';
 import 'package:capstone/Screen/explore_page.dart';
 import 'package:capstone/Screen/favorite_page.dart';
 import 'package:capstone/Screen/shop_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/colors.dart';
@@ -33,18 +32,18 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
             backgroundColor: Colors.white,
             bottomNavigationBar: Container(
               decoration:
-                  BoxDecoration(borderRadius: radius, color: AppColors.primary),
+                  BoxDecoration(borderRadius: radius, color: AppColors.grey),
               height: width / 6.5,
               width: MediaQuery.of(context).size.width,
               child: TabBar(
                 indicatorColor: Colors.grey,
                 unselectedLabelStyle: const TextStyle(color: Colors.white),
-                labelColor: Colors.white,
+                labelColor: Colors.black,
                 labelStyle: TextStyle(
                   fontSize: width / 25,
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.normal,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 isScrollable: false,
                 indicatorPadding: const EdgeInsets.only(left: 0, right: 0),
@@ -52,40 +51,40 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                   Tab(
                     icon: Image.asset(
                       "assets/images/storeIcon.gif",
-                      height: 50,
-                      width: 50,
+                      height: 30,
+                      width: 30,
                     ),
                     text: 'Shop',
                   ),
                   Tab(
                     icon: Image.asset(
                       "assets/images/discover.gif",
-                      height: 50,
-                      width: 50,
+                      height: 30,
+                      width: 30,
                     ),
                     text: 'Explore',
                   ),
                   Tab(
                     icon: Image.asset(
                       "assets/images/cart.gif",
-                      height: 45,
-                      width: 50,
+                      height: 30,
+                      width: 30,
                     ),
                     text: 'Cart',
                   ),
                   Tab(
                     icon: Image.asset(
                       "assets/images/favorite.gif",
-                      height: 50,
-                      width: 50,
+                      height: 30,
+                      width: 30,
                     ),
                     text: 'Favorite',
                   ),
                   Tab(
                     icon: Image.asset(
                       "assets/images/account.gif",
-                      height: 50,
-                      width: 50,
+                      height: 30,
+                      width: 30,
                     ),
                     text: 'Account',
                   ),
