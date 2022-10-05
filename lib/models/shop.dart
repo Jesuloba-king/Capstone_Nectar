@@ -168,300 +168,309 @@ class ShopPage extends StatelessWidget {
                 ),
 
                 //1st List item - Container containing products...
-                SizedBox(
-                  height: 260,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset("assets/images/banana.png"),
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const ViewProductsPage();
+                    }));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 260,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child:
+                                      Image.asset("assets/images/banana.png"),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
 
-                            //Organic Banana text Container
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Organic Bananas",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "7pcs, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
+                                //Organic Banana text Container
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Organic Bananas",
                                     style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
+                                      fontFamily: "Gilroy",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 26,
+                                      fontSize: 18,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const ViewProductsPage();
-                                }));
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset("assets/images/pepper.png"),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Naturel Red Apple",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "1kg, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "7pcs, Price",
                                     style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
+                                      fontFamily: "Gilroy-Light",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 26,
+                                      fontSize: 15,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 10, left: 10),
-                                child: Image.asset("assets/images/fruits.png"),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-
-                            //Organic Banana text Container
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Fruits",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "7pcs, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child:
+                                      Image.asset("assets/images/pepper.png"),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Naturel Red Apple",
                                     style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
+                                      fontFamily: "Gilroy",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 26,
+                                      fontSize: 18,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "1kg, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 10, left: 10),
+                                  child:
+                                      Image.asset("assets/images/fruits.png"),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+
+                                //Organic Banana text Container
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Fruits",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "7pcs, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
 
@@ -505,302 +514,316 @@ class ShopPage extends StatelessWidget {
                 ),
 
                 //2nd List item - Container containing products...
-                SizedBox(
-                  height: 260,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset("assets/images/pepper.png"),
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const ViewProductsPage();
+                    }));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 260,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Bell Pepper Red",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child:
+                                      Image.asset("assets/images/pepper.png"),
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "1kg, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
+                                const SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Bell Pepper Red",
                                     style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
+                                      fontFamily: "Gilroy",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 26,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset(
-                                  "assets/images/ginger.png",
-                                  height: 90,
-                                  width: 100,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Ginger",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "250gm, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$2.99",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 26,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset("assets/images/banana.png"),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-
-                            //Organic Banana text Container
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Organic Bananas",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "7pcs, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 26,
+                                      fontSize: 18,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "1kg, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child: Image.asset(
+                                    "assets/images/ginger.png",
+                                    height: 90,
+                                    width: 100,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Ginger",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "250gm, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$2.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child:
+                                      Image.asset("assets/images/banana.png"),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+
+                                //Organic Banana text Container
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Organic Bananas",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "7pcs, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
 
                 const SizedBox(
                   height: 10,
                 ),
+
                 //Groceries Category
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -840,123 +863,127 @@ class ShopPage extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(
-                  height: 260,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      //1st
-                      Container(
-                        height: 105,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: const Color(0XFFF8A44C),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(padding: EdgeInsets.all(10)),
-                            InkWell(
-                              onTap: () {},
-                              child: Image.asset("assets/images/pulse.png"),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(5),
-                              child: const Text(
-                                "Pulses",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                //New Category-tabs
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 260,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        //1st
+                        Container(
+                          height: 40,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: const Color(0XFFF8A44C).withOpacity(0.15),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(padding: EdgeInsets.all(10)),
+                              InkWell(
+                                onTap: () {},
+                                child: Image.asset("assets/images/pulse.png"),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.all(5),
+                                child: const Text(
+                                  "Pulses",
+                                  style: TextStyle(
+                                    fontFamily: "Gilroy",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      //2nd
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 105,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: const Color(0XFF53B175),
+                        //2nd
+                        const SizedBox(
+                          width: 20,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Padding(padding: EdgeInsets.all(10)),
-                            InkWell(
-                              onTap: () {},
-                              child: Image.asset("assets/images/rice.png"),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(5),
-                              child: const Text(
-                                "Rice",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                        Container(
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: const Color(0XFF53B175).withOpacity(0.15),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Padding(padding: EdgeInsets.all(10)),
+                              InkWell(
+                                onTap: () {},
+                                child: Image.asset("assets/images/rice.png"),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.all(5),
+                                child: const Text(
+                                  "Rice",
+                                  style: TextStyle(
+                                    fontFamily: "Gilroy",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      //3rd
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 105,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: const Color(0XFFD3B0E0),
+                        //3rd
+                        const SizedBox(
+                          width: 20,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Padding(padding: EdgeInsets.all(10)),
-                            InkWell(
-                              onTap: () {},
-                              child: Image.asset(
-                                "assets/images/storeIcon.gif",
-                                height: 100,
-                                width: 100,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(5),
-                              child: const Text(
-                                "Store",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                        Container(
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: const Color(0XFFD3B0E0).withOpacity(0.25),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Padding(padding: EdgeInsets.all(10)),
+                              InkWell(
+                                onTap: () {},
+                                child: Image.asset(
+                                  "assets/images/storeIcon.gif",
+                                  height: 100,
+                                  width: 100,
                                 ),
                               ),
-                            ),
-                          ],
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                margin: const EdgeInsets.all(5),
+                                child: const Text(
+                                  "Store",
+                                  style: TextStyle(
+                                    fontFamily: "Gilroy",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
@@ -964,299 +991,311 @@ class ShopPage extends StatelessWidget {
                   height: 20,
                 ),
 
-                SizedBox(
-                  height: 260,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset(
-                                  "assets/images/meat.png",
-                                  height: 80,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const ViewProductsPage();
+                    }));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 260,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child: Image.asset(
+                                    "assets/images/meat.png",
+                                    height: 80,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Beef Bone",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                                const SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "1kg, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Beef Bone",
                                     style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
+                                      fontFamily: "Gilroy",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 26,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset(
-                                  "assets/images/chicken.png",
-                                  height: 90,
-                                  width: 100,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Broiler Chicken",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "1kg, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$2.99",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 26,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 250,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xffF5F5F5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(top: 20, left: 10),
-                                child: Image.asset("assets/images/banana.png"),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-
-                            //Organic Banana text Container
-                            Container(
-                              margin: const EdgeInsets.all(5),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                "Organic Bananas",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 1, left: 7),
-                              alignment: Alignment.centerLeft,
-                              // padding: const EdgeInsets.only(bottom: 8),
-                              child: const Text(
-                                "7pcs, Price",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy-Light",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const Text(
-                                    "\$4.99",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-ExtraBold",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 26,
+                                      fontSize: 18,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff53B175),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Icon(
-                                        CupertinoIcons.add,
-                                        size: 35,
-                                        color: Colors.white,
-                                      ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "1kg, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child: Image.asset(
+                                    "assets/images/chicken.png",
+                                    height: 90,
+                                    width: 100,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Broiler Chicken",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "1kg, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$2.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            height: 250,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xffF5F5F5),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child:
+                                      Image.asset("assets/images/banana.png"),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+
+                                //Organic Banana text Container
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "Organic Bananas",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 1, left: 7),
+                                  alignment: Alignment.centerLeft,
+                                  // padding: const EdgeInsets.only(bottom: 8),
+                                  child: const Text(
+                                    "7pcs, Price",
+                                    style: TextStyle(
+                                      fontFamily: "Gilroy-Light",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        "\$4.99",
+                                        style: TextStyle(
+                                          fontFamily: "Gilroy-ExtraBold",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 26,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff53B175),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 35,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],

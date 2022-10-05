@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ViewProductsPage extends StatelessWidget {
   const ViewProductsPage({super.key});
@@ -37,11 +35,14 @@ class ViewProductsPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                height: 370,
+                height: 270,
                 width: 420,
                 decoration: BoxDecoration(
-                  color: Colors.tealAccent,
-                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.tealAccent.withOpacity(0.75),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -84,19 +85,9 @@ class ViewProductsPage extends StatelessWidget {
                         ),
                         const Padding(padding: EdgeInsets.all(5)),
                         Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
-                                spreadRadius: 5,
-                                blurRadius: 4,
-                              )
-                            ],
-                          ),
+                          padding: const EdgeInsets.all(4),
                           child: const Text(
-                            "1",
+                            "01",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 30),
                           ),
@@ -124,7 +115,165 @@ class ViewProductsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Spacer(),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      "Product Details",
+                      style: TextStyle(
+                        fontFamily: "Gilroy",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(CupertinoIcons.arrowtriangle_down_fill),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: const [
+                    Text(
+                      "Apples are nutritious. Apples may be good for weight loss. Apples may be good for your heart. As part of a healtful and varied diet.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "Gilroy",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Nutritions",
+                      style: TextStyle(
+                        fontFamily: "Gilroy",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 43,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          child: Text(
+                            "100gm",
+                            style: TextStyle(
+                              fontFamily: "Gilroy-Light",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.arrow_forward_ios_sharp),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Reviews",
+                      style: TextStyle(
+                        fontFamily: "Gilroy",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffF3603F),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffF3603F),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffF3603F),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffF3603F),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffF3603F),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.arrow_forward_ios_sharp),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              //add to basket button....
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        width: 411,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color(0xff53B175),
+                        ),
+                        child: const Text(
+                          'Add To Basket',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: "Gilroy",
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
