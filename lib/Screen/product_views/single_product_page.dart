@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:intrinsic_grid_view/intrinsic_grid_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -71,6 +73,15 @@ class _MyHomePageState extends State<ProductDetailsPage> {
     productModel = ProductModel.fromJson(widget.productModel);
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: AppText(
+            text: "Product Details",
+            fontSize: Adaptive.sp(18),
+            color: Colors.red,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w600),
+        elevation: 0,
+      ),
       body: Container(
         color: Colors.white,
         width: MediaQuery.of(context).size.width,
@@ -109,24 +120,47 @@ class _MyHomePageState extends State<ProductDetailsPage> {
                     children: <Widget>[
                       Row(
                         children: [
-                          const Text(
-                            "5.0",
-                            style: TextStyle(
-                                fontSize: 8, fontWeight: FontWeight.bold),
-                          ),
+                          AppText(
+                              text: "${productModel.rating!.rate}",
+                              fontSize: Adaptive.sp(16),
+                              color: Colors.black,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
                           const SizedBox(
                             width: 5,
                           ),
-                          Row(
-                            children: List.generate(
-                              5,
-                              (index) => const Icon(
-                                Icons.star_border,
-                                size: 12.0,
-                                color: Colors.red,
-                              ),
+                          RatingBar.builder(
+                            initialRating: 0.0,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: (productModel.rating!.rate).toInt(),
+                            itemSize: 20,
+                            glowColor: Colors.red,
+                            unratedColor: Colors.red,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.red,
+                              size: 15,
                             ),
-                          )
+                            onRatingUpdate: (rating) {
+                              if (kDebugMode) {
+                                print(rating);
+                              }
+                            },
+                          ),
+                          // Row(
+                          //   children: List.generate(
+                          //     5,
+                          //     (index) => const Icon(
+                          //       Icons.star_border,
+                          //       size: 12.0,
+                          //       color: Colors.red,
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                       const Spacer(),
