@@ -1,5 +1,9 @@
+import 'package:capstone/widget/app_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../widget/app_texts.dart';
 
 class ViewProductsPage extends StatelessWidget {
   const ViewProductsPage({super.key});
@@ -39,7 +43,7 @@ class ViewProductsPage extends StatelessWidget {
                 width: 420,
                 decoration: BoxDecoration(
                   color: Colors.tealAccent.withOpacity(0.75),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
@@ -115,7 +119,7 @@ class ViewProductsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
@@ -158,7 +162,7 @@ class ViewProductsPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Nutritions",
                       style: TextStyle(
                         fontFamily: "Gilroy",
@@ -176,7 +180,7 @@ class ViewProductsPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.grey.withOpacity(0.2),
                           ),
-                          child: Text(
+                          child: const Text(
                             "100gm",
                             style: TextStyle(
                               fontFamily: "Gilroy-Light",
@@ -186,10 +190,10 @@ class ViewProductsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Icon(Icons.arrow_forward_ios_sharp),
+                        const Icon(Icons.arrow_forward_ios_sharp),
                       ],
                     ),
                   ],
@@ -200,7 +204,7 @@ class ViewProductsPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Reviews",
                       style: TextStyle(
                         fontFamily: "Gilroy",
@@ -211,7 +215,7 @@ class ViewProductsPage extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                      children: const [
                         Icon(
                           Icons.star,
                           color: Color(0xffF3603F),
@@ -249,27 +253,14 @@ class ViewProductsPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        width: 411,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xff53B175),
-                        ),
-                        child: const Text(
-                          'Add To Basket',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Gilroy",
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                    appButton(
+                      onPressed: () {},
+                      child: AppText(
+                          text: "Add to Cart",
+                          fontSize: Adaptive.sp(16),
+                          color: Colors.black,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),

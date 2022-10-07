@@ -1,345 +1,430 @@
-import 'package:capstone/Logins/log_in.dart';
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+import 'package:capstone/Logins/sign_in.dart';
+import 'package:capstone/Screen/home_screen.dart';
+import 'package:capstone/utilities/helper_functions.dart';
+import 'package:capstone/widget/app_buttons.dart';
+import 'package:capstone/widget/app_texts.dart';
+import 'package:capstone/widget/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../models/auth_service.dart';
+import '../widget/spacer.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  TextEditingController? emailJK = TextEditingController();
-  TextEditingController? UsernameJK = TextEditingController();
-  //get User's info from filling of the forms....
-  // getUserInfo() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final getEmail = prefs.getString('enter email');
-  //
-  //
-  //   setState(() {
-  //     emailJK!.text= getEmail!;
-  //   });
-  //
-  //   if (kDebugMode) {
-  //     print(getEmail);
-  //   }
-  //
-  // }
+class _LoginPageState extends State<SignUpPage> {
+  final _formkey = GlobalKey<FormState>();
+  late TextEditingController _email;
+  late TextEditingController _password;
+  late TextEditingController _confirmPassword;
+  bool isProcessing = false;
+  bool obscureText = true;
+  bool obscureConfirmPassword = true;
+  bool loading = false;
+  final _focusEmail = FocusNode();
+  final _focusPassword = FocusNode();
+  final _focusConfirmPassword = FocusNode();
 
   @override
   void initState() {
-    // TODO: implement initState
+    _email = TextEditingController();
+    _password = TextEditingController();
+    _confirmPassword = TextEditingController();
     super.initState();
-    // getUserInfo();
   }
 
-  get passwordJK => null;
-  // toggle to reveal password....
-  bool _isObscure = true;
-  //Loader...
-  bool isLoading = false;
-
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    _confirmPassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 60),
-            Image.asset("assets/images/Carrot.png", height: 50, width: 50,),
-            const SizedBox(height: 30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Padding(padding: EdgeInsets.only(left: 10)),
-                Text("Sign Up",
-                  style:TextStyle(
-                    fontFamily: "Gilroy",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ),),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Padding(padding: EdgeInsets.only(left: 10)),
-                Text("Enter your credentials to continue",
-                  style:TextStyle(
-                    fontFamily: "Gilroy",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 16,
-                    color: Color(0xff7C7C7C),
-                    fontWeight: FontWeight.w500,
-                  ),),
-              ],
-            ),
-
-            //Form Field Column...
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30,),
+    double width = MediaQuery.of(context).size.width;
+    final key = GlobalKey<ScaffoldMessengerState>();
+    Pattern pattern = '@';
+    RegExp regex = RegExp(pattern.toString());
+    return Container(
+        height: Adaptive.h(12.5),
+        width: Adaptive.w(50),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/guy.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Scaffold(
+          key: key,
+          backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: () {
+              _focusEmail.unfocus();
+              _focusPassword.unfocus();
+              _focusConfirmPassword.unfocus();
+            },
+            child: ListView(
+              children: <Widget>[
+                Space.spacerH30,
                 Container(
-                    margin: const EdgeInsets.all(8),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                          children: <Widget>[
-                            //Username text form field....
-                            Row(
-                              // Email address text....
-                              children: const [
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Text("Username",
-                                  style:TextStyle(
-                                    fontFamily: "Gilroy",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),),
-                              ],
-                            ),
-                            TextFormField(
-                              controller: UsernameJK,
-                              validator: (String? val){
-                                if(val!.isEmpty){
-                                  return "username is empty";
+                  margin: const EdgeInsets.symmetric(vertical: 0),
+                  padding:
+                      EdgeInsets.only(top: width / 11, left: 20, right: 20),
+                  child: Form(
+                    key: _formkey,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          AppText(
+                              text: "Email",
+                              textAlign: TextAlign.center,
+                              fontSize: Adaptive.sp(18),
+                              color: Colors.white,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                              obscureText: false,
+                              focusNode: _focusEmail,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: _email,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Empty Field';
+                                } else if (!regex.hasMatch(value)) {
+                                  return 'Enter valid email';
                                 }
                                 return null;
                               },
-                              onSaved: (String? username) {
-                                UsernameJK = UsernameJK! as TextEditingController?;
-                              },
+                              keyboardType: TextInputType.emailAddress,
+                              autocorrect: true,
+                              enableSuggestions: true,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              ),
                               decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: EdgeInsets.only(
+                                    top: 0, left: 10, right: 10),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                hintText: "enter username",
-                                hintStyle: TextStyle(
-                                  fontFamily: "Gilroy",
-                                ),
-                                suffixIcon: Icon(CupertinoIcons.person_solid),
-                              ),
-                            ),
-                            const SizedBox(height: 20,),
-
-                            //Email text form field....
-                            Row(
-                              // Email address text....
-                              children: const [
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Text("Email Address",
-                                  style:TextStyle(
-                                    fontFamily: "Gilroy",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),),
-                              ],
-                            ),
-                            TextFormField(
-                              controller: emailJK,
-                              validator: (String? val){
-                                if (val!.isEmpty) {
-                                  return "Please enter email address";
-                                }
-                                if (!RegExp(r'\S+@\S+\.\S+')
-                                    .hasMatch(val)) {
-                                  return "Please enter valid email address";
-                                }
-                                return null;
-                              },
-                              onSaved: (String? email) {
-                                emailJK = email! as TextEditingController?;
-                              },
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                hintText: "enter email",
-                                hintStyle: TextStyle(
-                                  fontFamily: "Gilroy",
-                                ),
-                                suffixIcon: Icon(CupertinoIcons.mail),
-                              ),
-                            ),
-
-                            //Password field
-                            const SizedBox(height: 20,),
-                            Row(
-                              //Password text....
-                              children: const [
-                                Padding(padding: EdgeInsets.only(left: 15)),
-                                Text("Password",
-                                  style:TextStyle(
-                                    fontFamily: "Gilroy",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),),
-                              ],
-                            ),
-                            TextFormField(
-                              obscureText: _isObscure,
-                              controller: passwordJK,
-                              validator: (String? val){
-                                if(val!.isEmpty){
-                                  return "password is empty";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                hintText: "password",
-                                hintStyle: const TextStyle(
-                                  fontFamily: "Gilroy",
-                                ),
-                                suffixIcon: CupertinoButton(
-                                    child: Icon( _isObscure ? CupertinoIcons.eye_slash:CupertinoIcons.eye, color: Colors.black,),
-                                    onPressed:(){
-                                      setState(() {
-                                        _isObscure = !_isObscure;
-                                      });
-                                    }),
-                              ),
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            //By continuing you agree to our Terms of Service and Privacy Policy. - Text
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Text("By continuing you agree to our Terms of Service and Privacy Policy.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff7C7C7C),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40)),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
+                                filled: true,
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40)),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                labelText: 'example@gmail.com',
+                                hintStyle: TextStyle(color: Colors.white),
+                                labelStyle: TextStyle(
+                                    color: Color.fromRGBO(199, 199, 199, 1)),
+                              )),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          AppText(
+                              text: "Password",
+                              textAlign: TextAlign.center,
+                              fontSize: Adaptive.sp(18),
+                              color: Colors.white,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            focusNode: _focusPassword,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            obscureText: obscureText,
+                            controller: _password,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Empty field";
+                              } else {
+                                return null;
+                              }
+                            },
+                            style: const TextStyle(
+                              // textStyle: textTheme.bodyText1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'Gilroy',
                             ),
-
-                            //Sign Up button....
-                            const SizedBox(height: 30),
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                    if (formKey.currentState!.validate()) {
-                                      showCupertinoDialog(context: context, builder: (BuildContext ctx){
-                                        return CupertinoAlertDialog(
-                                          title: const Text("Done",style: TextStyle(
-                                            fontFamily: "Gilroy",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),),
-                                          content: const Text("Validation is passed",style: TextStyle(
-                                            fontFamily: "Gilroy",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),),
-                                          actions: [
-                                            CupertinoButton(child: const Text("cancel", style: TextStyle(
-                                              fontFamily: "Gilroy", fontSize: 18, color: Colors.pink,
-                                              fontWeight: FontWeight.w500,
-                                            ),),
-                                              onPressed: (){ Navigator.pop(context);},
-                                            ),
-                                            CupertinoButton(child: const Text("Proceed", style: TextStyle(
-                                              fontFamily: "Gilroy", fontSize: 19, fontWeight: FontWeight.w500,),),
-                                                onPressed: () async {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context)
-                                                  {return const LoginPage();}));
-                                                }),
-                                          ],
-                                        );
-                                      });
-                                    }
-                                    else {
-                                      print("unsuccessful");
-                                    }
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    width: 411, height: 50,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: const Color(0xff53B175),
-                                    ),
-                                    child: const Text('Sign Up',
+                            decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 0, left: 10, right: 10),
+                              border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () => setState(() {
+                                  obscureText = !obscureText;
+                                }),
+                                child: Icon(
+                                  obscureText
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color:
+                                      obscureText ? Colors.grey : Colors.pink,
+                                ),
+                              ),
+                              labelText: 'Password',
+                              alignLabelWithHint: true,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              hintStyle: const TextStyle(color: Colors.white),
+                              labelStyle: const TextStyle(
+                                  color: Color.fromRGBO(199, 199, 199, 1)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          AppText(
+                              text: "Confirm Password",
+                              textAlign: TextAlign.center,
+                              fontSize: Adaptive.sp(18),
+                              color: Colors.white,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            focusNode: _focusConfirmPassword,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            obscureText: obscureConfirmPassword,
+                            controller: _confirmPassword,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Empty field";
+                              } else if (value != _password.text) {
+                                return "Password does not match";
+                              } else {
+                                return null;
+                              }
+                            },
+                            style: const TextStyle(
+                              // textStyle: textTheme.bodyText1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'Gilroy',
+                            ),
+                            decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 0, left: 10, right: 10),
+                              border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40)),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () => setState(() {
+                                  obscureConfirmPassword =
+                                      !obscureConfirmPassword;
+                                }),
+                                child: Icon(
+                                  obscureConfirmPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: obscureConfirmPassword
+                                      ? Colors.grey
+                                      : Colors.pink,
+                                ),
+                              ),
+                              labelText: 'Confirm Password',
+                              alignLabelWithHint: true,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              hintStyle: const TextStyle(color: Colors.white),
+                              labelStyle: const TextStyle(
+                                  color: Color.fromRGBO(199, 199, 199, 1)),
+                            ),
+                          ),
+                          Space.spacerH50,
+                          appButton(
+                              onPressed: () async {
+                                _focusEmail.unfocus();
+                                _focusPassword.unfocus();
+                                if (_formkey.currentState!.validate()) {
+                                  setState(() {
+                                    isProcessing = true;
+                                  });
+                                  debugPrint("Email: ${_email.text}");
+                                  debugPrint("Password: ${_password.text}");
+                                  bool isValid = await AuthService.signUp(
+                                      _email.text, _password.text);
+                                  if (isValid) {
+                                    setState(() {
+                                      isProcessing = false;
+                                    });
+                                    navigateToRoute(
+                                        context,
+                                        const HomeScreenPage(
+                                            currentUserId: ""));
+                                  }
+                                }
+                              },
+                              child: isProcessing
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : AppText(
+                                      text: "Sign Up",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: "Gilroy",
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),),
-                                  ),
+                                      fontSize: Adaptive.sp(18),
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600)),
+                          Space.spacerH50,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Expanded(
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
                                 ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Already have an account?",
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              AppText(
+                                  text: "Or continue with",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Gilroy-Light",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),),
-
-                                //Log IN Button....
-                                CupertinoButton(
-                                  onPressed: () async {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                                      return const LoginPage();
-                                    }));
-                                  },
-                                  child: const Text("Log in",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: 'Gilroy',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff53B175),
-                                    ),),
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w600),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Expanded(
+                                child: Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
                                 ),
+                              ),
+                            ],
+                          ),
+                          appButton(
+                            onPressed: () async {
+                              AuthService().signInWithGoogle().then((value) {
+                                navigateToRoute(
+                                    context,
+                                    HomeScreenPage(
+                                        currentUserId: value.user!.uid));
+                              });
+                            },
+                            btnColor: Colors.white,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset("assets/images/google.png"),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                AppText(
+                                    text: "Google",
+                                    textAlign: TextAlign.center,
+                                    fontSize: Adaptive.sp(18),
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w600),
                               ],
                             ),
-                          ]
-                      ),
-                    )
+                          ),
+                          Space.spacerH50,
+                          Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AppText(
+                                  text: "Already have an Account?",
+                                  textAlign: TextAlign.center,
+                                  fontSize: Adaptive.sp(18),
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w600),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    navigateToRoute(
+                                        context, const SignInPage());
+                                  },
+                                  child: AppText(
+                                      text: "Login",
+                                      textAlign: TextAlign.center,
+                                      fontSize: Adaptive.sp(18),
+                                      color: AppColors.primary,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          )),
+                        ]),
+                  ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

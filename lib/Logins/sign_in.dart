@@ -6,7 +6,9 @@ import 'package:capstone/widget/app_buttons.dart';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../models/auth_service.dart';
+import '../widget/spacer.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({
@@ -43,14 +45,13 @@ class _LoginPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final key = GlobalKey<ScaffoldMessengerState>();
     Pattern pattern = '@';
     RegExp regex = RegExp(pattern.toString());
     return Container(
-        height: height,
-        width: width,
+        height: Adaptive.h(12.5),
+        width: Adaptive.w(50),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/guy.png"),
@@ -85,7 +86,7 @@ class _LoginPageState extends State<SignInPage> {
                           AppText(
                               text: "Email",
                               textAlign: TextAlign.center,
-                              fontSize: 16,
+                              fontSize: Adaptive.sp(18),
                               color: Colors.white,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w600),
@@ -146,7 +147,7 @@ class _LoginPageState extends State<SignInPage> {
                           AppText(
                               text: "Password",
                               textAlign: TextAlign.center,
-                              fontSize: 16,
+                              fontSize: Adaptive.sp(18),
                               color: Colors.white,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w600),
@@ -222,7 +223,7 @@ class _LoginPageState extends State<SignInPage> {
                               child: AppText(
                                   text: "Forget password?",
                                   textAlign: TextAlign.center,
-                                  fontSize: 16,
+                                  fontSize: Adaptive.sp(18),
                                   color: Colors.white,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w600),
@@ -263,7 +264,7 @@ class _LoginPageState extends State<SignInPage> {
                                   : AppText(
                                       text: "Log in",
                                       textAlign: TextAlign.center,
-                                      fontSize: 16,
+                                      fontSize: Adaptive.sp(18),
                                       color: Colors.white,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600)),
@@ -300,38 +301,35 @@ class _LoginPageState extends State<SignInPage> {
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () async {
-                                    AuthService()
-                                        .signInWithGoogle()
-                                        .then((value) {
-                                      navigateToRoute(
-                                          context,
-                                          HomeScreenPage(
-                                              currentUserId: value.user!.uid));
-                                    });
-                                  },
-                                  icon:
-                                      Image.asset("assets/images/google.png")),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                      "assets/images/facebook.png")),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                      "assets/images/instagram.png")),
-                            ],
+                          appButton(
+                            onPressed: () async {
+                              AuthService().signInWithGoogle().then((value) {
+                                navigateToRoute(
+                                    context,
+                                    HomeScreenPage(
+                                        currentUserId: value.user!.uid));
+                              });
+                            },
+                            btnColor: Colors.white,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset("assets/images/google.png"),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                AppText(
+                                    text: "Google",
+                                    textAlign: TextAlign.center,
+                                    fontSize: Adaptive.sp(18),
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w600),
+                              ],
+                            ),
                           ),
+                          Space.spacerH50,
                           Center(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -339,7 +337,7 @@ class _LoginPageState extends State<SignInPage> {
                               AppText(
                                   text: "Don't have an Account?",
                                   textAlign: TextAlign.center,
-                                  fontSize: 16,
+                                  fontSize: Adaptive.sp(18),
                                   color: Colors.white,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w600),
@@ -354,7 +352,7 @@ class _LoginPageState extends State<SignInPage> {
                                   child: AppText(
                                       text: "Sign up",
                                       textAlign: TextAlign.center,
-                                      fontSize: 16,
+                                      fontSize: Adaptive.sp(18),
                                       color: AppColors.primary,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold)),

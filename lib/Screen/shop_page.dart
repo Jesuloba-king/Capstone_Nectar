@@ -1,7 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:capstone/Screen/product_views/elctronics_page.dart';
+import 'package:capstone/Screen/product_views/exclusive_offer_page.dart';
+import 'package:capstone/utilities/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../View Products/products.dart';
+import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:http/http.dart' as http;
+import '../API_Services/api_constant.dart';
+import '../API_Services/data_models.dart';
+import '../widget/app_texts.dart';
+import '../widget/colors.dart';
+import 'product_views/jewelry_page.dart';
+import 'product_views/single_product_page.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({Key? key, required this.currentUserId}) : super(key: key);
@@ -13,10 +25,22 @@ class ShopPage extends StatefulWidget {
 
 class _ShopPageState extends State<ShopPage> {
   late TextEditingController searchTec;
+  StreamController? _exclusiveOfferController;
+  StreamController? _electronics;
+  StreamController? _jewelry;
+  late List<ProductModel> productModel = [];
+  late List<ProductModel> searchProductList = [];
 
   @override
   void initState() {
     searchTec = TextEditingController();
+    _exclusiveOfferController = StreamController();
+    _electronics = StreamController();
+    _jewelry = StreamController();
+
+    loadExclusiveOffer();
+    loadElectronics();
+    loadJewelry();
 
     super.initState();
   }
@@ -26,6 +50,446 @@ class _ShopPageState extends State<ShopPage> {
     searchTec.dispose();
 
     super.dispose();
+  }
+
+  Future fetchExclusiveOffer([howMany = 5]) async {
+    var url = Uri.parse(ApiConstants.productLimitBaseUrl);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future fetchElectronics([howMany = 5]) async {
+    var url = Uri.parse(ApiConstants.electronicsBaseUrl);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future fetchJewelry([howMany = 5]) async {
+    var url = Uri.parse(ApiConstants.jewelryBaseUrl);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  loadExclusiveOffer() async {
+    fetchExclusiveOffer().then((res) async {
+      _exclusiveOfferController!.add(res);
+      return res;
+    });
+  }
+
+  loadElectronics() async {
+    fetchElectronics().then((res) async {
+      _electronics!.add(res);
+      return res;
+    });
+  }
+
+  loadJewelry() async {
+    fetchJewelry().then((res) async {
+      _jewelry!.add(res);
+      return res;
+    });
+  }
+
+  searchProducts(String? search) {
+    List<ProductModel> searchList = [];
+    searchList.addAll(searchProductList);
+    if (search!.isNotEmpty) {
+      List<ProductModel> searchResults = [];
+      for (var item in searchList) {
+        if (item.title!.toLowerCase().contains(search.toLowerCase())) {
+          searchResults.add(item);
+        }
+      }
+      setState(() {
+        productModel = searchResults;
+      });
+
+      return;
+    } else {
+      productModel = searchProductList;
+    }
+  }
+
+  Widget exclusiveOffer(BuildContext context) {
+    Locale locale = Localizations.localeOf(context);
+    var format =
+        NumberFormat.simpleCurrency(locale: locale.toString(), name: "USD");
+    var name = format.currencySymbol;
+    return StreamBuilder(
+        stream: _exclusiveOfferController!.stream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text("error");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          List<dynamic> model = snapshot.data;
+          return SizedBox(
+            height: 250,
+            child: ListView(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              scrollDirection: Axis.horizontal,
+              children: List.generate(snapshot.data.length, (index) {
+                var post = model[index];
+                return Row(
+                  children: [
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        navigateToRoute(
+                            context,
+                            ProductDetailsPage(
+                              productModel: post,
+                              currentUserId: widget.currentUserId,
+                            ));
+                      },
+                      child: Container(
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 130,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage("${post["image"]}"),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 10),
+                              child: RichText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle:
+                                    StrutStyle(fontSize: Adaptive.sp(16)),
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    text: "${post["title"]}"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppText(
+                                      text: "$name${post["price"]}",
+                                      fontSize: Adaptive.sp(16),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 20,
+                                            color: AppColors.white,
+                                          )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                  ],
+                );
+              }),
+            ),
+          );
+        });
+  }
+
+  Widget electronics(BuildContext context) {
+    Locale locale = Localizations.localeOf(context);
+    var format =
+        NumberFormat.simpleCurrency(locale: locale.toString(), name: "USD");
+    var name = format.currencySymbol;
+    return StreamBuilder(
+        stream: _electronics!.stream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text("error");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('loading');
+          }
+          List<dynamic> model = snapshot.data;
+          return SizedBox(
+            height: 250,
+            child: ListView(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              scrollDirection: Axis.horizontal,
+              children: List.generate(5, (index) {
+                var post = model[index];
+                return Row(
+                  children: [
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        navigateToRoute(
+                            context,
+                            ProductDetailsPage(
+                              productModel: post,
+                              currentUserId: widget.currentUserId,
+                            ));
+                      },
+                      child: Container(
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 130,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage("${post["image"]}"),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 10),
+                              child: RichText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle:
+                                    StrutStyle(fontSize: Adaptive.sp(16)),
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    text: "${post["title"]}"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppText(
+                                      text: "$name${post["price"]}",
+                                      fontSize: Adaptive.sp(16),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 20,
+                                            color: AppColors.white,
+                                          )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                  ],
+                );
+              }),
+            ),
+          );
+        });
+  }
+
+  Widget jewelry(BuildContext context) {
+    Locale locale = Localizations.localeOf(context);
+    var format =
+        NumberFormat.simpleCurrency(locale: locale.toString(), name: "USD");
+    var name = format.currencySymbol;
+    return StreamBuilder(
+        stream: _jewelry!.stream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text("error");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('loading');
+          }
+          List<dynamic> model = snapshot.data;
+          return SizedBox(
+            height: 250,
+            child: ListView(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              scrollDirection: Axis.horizontal,
+              children: List.generate(snapshot.data.length, (index) {
+                var post = model[index];
+                return Row(
+                  children: [
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        navigateToRoute(
+                            context,
+                            ProductDetailsPage(
+                              productModel: post,
+                              currentUserId: widget.currentUserId,
+                            ));
+                      },
+                      child: Container(
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 130,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage("${post["image"]}"),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 10),
+                              child: RichText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                strutStyle:
+                                    StrutStyle(fontSize: Adaptive.sp(16)),
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    text: "${post["title"]}"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 4, left: 8, bottom: 0, top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppText(
+                                      text: "$name${post["price"]}",
+                                      fontSize: Adaptive.sp(16),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            CupertinoIcons.add,
+                                            size: 20,
+                                            color: AppColors.white,
+                                          )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                  ],
+                );
+              }),
+            ),
+          );
+        });
   }
 
   @override
@@ -43,50 +507,30 @@ class _ShopPageState extends State<ShopPage> {
             Scaffold(
               body: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 50),
-                    Image.asset(
-                      "assets/images/Carrot.png",
-                      height: 30,
-                      width: 30,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(CupertinoIcons.location_solid),
-                        Text(
-                          "Location",
-                          style: TextStyle(
-                            fontFamily: "Gilroy",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+
                     //Form Field for search bar....
-                    TextFormField(
-                      controller: searchTec,
-                      onChanged: (String? value) {
-                        // searchProduct(value!);
-                      },
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Colors.black12,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: searchTec,
+                        onChanged: (String? value) {
+                          // searchProduct(value!);
+                        },
+                        decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Colors.black12,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          prefixIcon: Icon(CupertinoIcons.search),
+                          hintText: "Search Store",
+                          helperStyle: TextStyle(fontFamily: "Gilroy"),
                         ),
-                        prefixIcon: Icon(CupertinoIcons.search),
-                        hintText: "Search Store",
-                        helperStyle: TextStyle(fontFamily: "Gilroy"),
                       ),
                     ),
 
@@ -119,29 +563,22 @@ class _ShopPageState extends State<ShopPage> {
                           Image.asset("assets/images/fruits.png"),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Padding(
+                            children: [
+                              const Padding(
                                   padding:
                                       EdgeInsets.only(right: 100, left: 80)),
-                              Text(
-                                "Fresh Vegetables",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
+                              AppText(
+                                  text: "Fresh Vegetables",
+                                  fontSize: Adaptive.sp(18),
+                                  color: Colors.black,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Text(
-                                "Get Up To 40% OFF",
-                                style: TextStyle(
-                                  fontFamily: "Gilroy",
+                                  fontWeight: FontWeight.w600),
+                              AppText(
+                                  text: "Get Up To 40% OFF",
+                                  fontSize: Adaptive.sp(16),
+                                  color: const Color(0xff53B175),
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 16,
-                                  color: Color(0xff53B175),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                                  fontWeight: FontWeight.w600),
                             ],
                           ),
                           Column(
@@ -162,21 +599,19 @@ class _ShopPageState extends State<ShopPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Text(
-                          "Exclusive Offer",
-                          style: TextStyle(
-                            fontFamily: "Gilroy-ExtraBold",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 24,
+                        AppText(
+                            text: "Exclusive Offer",
+                            fontSize: Adaptive.sp(18),
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600),
+
                         const SizedBox(
                           width: 120,
                         ),
 
                         //See all Button to show all items in Exclusive offer....
+
                         SizedBox(
                           height: 50,
                           width: 80,
@@ -191,336 +626,30 @@ class _ShopPageState extends State<ShopPage> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              onPressed: () {}),
+                              onPressed: () {
+                                navigateToRoute(
+                                    context,
+                                    ExclusiveOfferPage(
+                                        currentUserId: widget.currentUserId));
+                              }),
                         ),
                       ],
                     ),
 
                     //1st List item - Container containing products...
-                    SizedBox(
-                      height: 260,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child:
-                                        Image.asset("assets/images/banana.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-
-                                //Organic Banana text Container
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Organic Bananas",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "7pcs, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const ViewProductsPage();
-                                    }));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child:
-                                        Image.asset("assets/images/pepper.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Naturel Red Apple",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "1kg, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, left: 10),
-                                    child:
-                                        Image.asset("assets/images/fruits.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-
-                                //Organic Banana text Container
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Fruits",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "7pcs, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    exclusiveOffer(context),
 
                     //Best Selling Category
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Text(
-                          "Best Selling",
-                          style: TextStyle(
-                            fontFamily: "Gilroy-ExtraBold",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 24,
+                        AppText(
+                            text: "Electronics",
+                            fontSize: Adaptive.sp(18),
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600),
                         const SizedBox(
                           width: 160,
                         ),
@@ -540,339 +669,37 @@ class _ShopPageState extends State<ShopPage> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              onPressed: () {}),
+                              onPressed: () {
+                                navigateToRoute(
+                                    context,
+                                    ELectronicsPage(
+                                        currentUserId: widget.currentUserId));
+                              }),
                         ),
                       ],
                     ),
 
                     //2nd List item - Container containing products...
-                    SizedBox(
-                      height: 260,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child:
-                                        Image.asset("assets/images/pepper.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Bell Pepper Red",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "1kg, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child: Image.asset(
-                                      "assets/images/ginger.png",
-                                      height: 90,
-                                      width: 100,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Ginger",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "250gm, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$2.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child:
-                                        Image.asset("assets/images/banana.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-
-                                //Organic Banana text Container
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Organic Bananas",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "7pcs, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
+                    electronics(context),
                     const SizedBox(
                       height: 10,
                     ),
-                    //Groceries Category
+                    //Jewelry Category
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Padding(padding: EdgeInsets.all(3)),
-                        const Text(
-                          "Groceries",
-                          style: TextStyle(
-                            fontFamily: "Gilroy-ExtraBold",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 24,
+                        AppText(
+                            text: "Jewelry",
+                            fontSize: Adaptive.sp(18),
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600),
                         const SizedBox(
                           width: 160,
                         ),
 
-                        //See all Button to show all items in Best Selling Categories....
+                        //See all Button to show all items in Jewelry Categories....
                         SizedBox(
                           height: 50,
                           width: 80,
@@ -887,439 +714,24 @@ class _ShopPageState extends State<ShopPage> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              onPressed: () {}),
+                              onPressed: () {
+                                navigateToRoute(
+                                    context,
+                                    JewelryPage(
+                                        currentUserId: widget.currentUserId));
+                              }),
                         ),
                       ],
                     ),
 
-                    SizedBox(
-                      height: 260,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          //1st
-                          Container(
-                            height: 105,
-                            width: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: const Color(0XFFF8A44C),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.all(10)),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Image.asset("assets/images/pulse.png"),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(5),
-                                  margin: const EdgeInsets.all(5),
-                                  child: const Text(
-                                    "Pulses",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          //2nd
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 105,
-                            width: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: const Color(0XFF53B175),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Padding(padding: EdgeInsets.all(10)),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Image.asset("assets/images/rice.png"),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(5),
-                                  margin: const EdgeInsets.all(5),
-                                  child: const Text(
-                                    "Rice",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          //3rd
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 105,
-                            width: 250,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: const Color(0XFFD3B0E0),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Padding(padding: EdgeInsets.all(10)),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Image.asset(
-                                    "assets/images/storeIcon.gif",
-                                    height: 100,
-                                    width: 100,
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(5),
-                                  margin: const EdgeInsets.all(5),
-                                  child: const Text(
-                                    "Store",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    //2nd List item - Container containing products...
+                    jewelry(context),
+                    const SizedBox(
+                      height: 10,
                     ),
 
                     const SizedBox(
-                      height: 20,
-                    ),
-
-                    SizedBox(
-                      height: 260,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child: Image.asset(
-                                      "assets/images/meat.png",
-                                      height: 80,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Beef Bone",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "1kg, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child: Image.asset(
-                                      "assets/images/chicken.png",
-                                      height: 90,
-                                      width: 100,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Broiler Chicken",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "1kg, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$2.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            height: 250,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color(0xffF5F5F5),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 10),
-                                    child:
-                                        Image.asset("assets/images/banana.png"),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-
-                                //Organic Banana text Container
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    "Organic Bananas",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 1, left: 7),
-                                  alignment: Alignment.centerLeft,
-                                  // padding: const EdgeInsets.only(bottom: 8),
-                                  child: const Text(
-                                    "7pcs, Price",
-                                    style: TextStyle(
-                                      fontFamily: "Gilroy-Light",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        "\$4.99",
-                                        style: TextStyle(
-                                          fontFamily: "Gilroy-ExtraBold",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 26,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff53B175),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: const Icon(
-                                            CupertinoIcons.add,
-                                            size: 35,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                      height: 10,
                     ),
                   ],
                 ),

@@ -1,6 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 
 import 'package:capstone/Logins/sign_in.dart';
+import 'package:capstone/widget/colors.dart';
+import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,16 +30,55 @@ class NectarApp extends StatelessWidget {
           useMaterial3: true,
           primarySwatch: Colors.green,
         ),
-        home: const OnboardPage(title: 'Online Store'),
+        home: const SplashScreen1(),
       );
     });
   }
 }
 
-class OnboardPage extends StatefulWidget {
-  const OnboardPage({super.key, required this.title});
+class SplashScreen1 extends StatefulWidget {
+  const SplashScreen1({Key? key}) : super(key: key);
 
-  final String title;
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen1> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: Adaptive.h(12.5),
+      width: Adaptive.w(50),
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.primary, AppColors.primary])),
+      child: EasySplashScreen(
+        navigator: const SignInPage(),
+        durationInSeconds: 5,
+        loaderColor: Colors.red,
+        logo: Image.asset(
+          'assets/images/logoCombined.png',
+          width: 400,
+        ),
+        backgroundColor: AppColors.primary,
+        logoWidth: 100.0,
+        showLoader: true,
+      ),
+    );
+  }
+}
+
+class OnboardPage extends StatefulWidget {
+  const OnboardPage({
+    super.key,
+  });
 
   @override
   State<OnboardPage> createState() => _OnboardPageState();
@@ -57,7 +100,7 @@ class _OnboardPageState extends State<OnboardPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: const Color(0xff53B175),
+        color: AppColors.primary,
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
