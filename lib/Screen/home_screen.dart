@@ -26,7 +26,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
     );
     double width = MediaQuery.of(context).size.width;
     return DefaultTabController(
-        length: 5,
+        length: 4,
         child: Scaffold(
             key: scaffoldkey,
             backgroundColor: Colors.white,
@@ -55,14 +55,6 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                       width: 30,
                     ),
                     text: 'Shop',
-                  ),
-                  Tab(
-                    icon: Image.asset(
-                      "assets/images/discover.gif",
-                      height: 30,
-                      width: 30,
-                    ),
-                    text: 'Explore',
                   ),
                   Tab(
                     icon: Image.asset(
@@ -95,9 +87,6 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
               physics: const NeverScrollableScrollPhysics(),
               children: <Widget>[
                 ShopPage(
-                  currentUserId: widget.currentUserId,
-                ),
-                ExplorerPage(
                   currentUserId: widget.currentUserId,
                 ),
                 CartPage(

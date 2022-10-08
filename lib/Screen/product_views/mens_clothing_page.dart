@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:capstone/Screen/product_views/single_product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,22 @@ class _MyHomePageState extends State<MensClothingPage> {
             return const Text("error");
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Container(
+              height: getScreenHeight(context),
+              width: getScreenWidth(context),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: AnimatedShimmer(
+                height: getScreenHeight(context),
+                width: getScreenWidth(context),
+                startColor: Colors.grey,
+                endColor: Colors.blueGrey,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                delayInMilliSeconds: const Duration(milliseconds: 500),
+              ),
+            );
           }
           List<dynamic> model = snapshot.data;
           return Column(

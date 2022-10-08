@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:animated_shimmer/animated_shimmer.dart';
+import 'package:capstone/Screen/explore_page.dart';
 import 'package:capstone/Screen/product_views/elctronics_page.dart';
 import 'package:capstone/Screen/product_views/exclusive_offer_page.dart';
 import 'package:capstone/utilities/helper_functions.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +31,7 @@ class _ShopPageState extends State<ShopPage> {
   StreamController? _exclusiveOfferController;
   StreamController? _electronics;
   StreamController? _jewelry;
+  StreamController? _banner;
   late List<ProductModel> productModel = [];
   late List<ProductModel> searchProductList = [];
 
@@ -37,11 +41,12 @@ class _ShopPageState extends State<ShopPage> {
     _exclusiveOfferController = StreamController();
     _electronics = StreamController();
     _jewelry = StreamController();
+    _banner = StreamController();
 
     loadExclusiveOffer();
     loadElectronics();
     loadJewelry();
-
+    loadBanner();
     super.initState();
   }
 
@@ -50,6 +55,17 @@ class _ShopPageState extends State<ShopPage> {
     searchTec.dispose();
 
     super.dispose();
+  }
+
+  Future fetchBanner([howMany = 5]) async {
+    var url = Uri.parse(ApiConstants.productLimitBaseUrl);
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load post');
+    }
   }
 
   Future fetchExclusiveOffer([howMany = 5]) async {
@@ -83,6 +99,13 @@ class _ShopPageState extends State<ShopPage> {
     } else {
       throw Exception('Failed to load post');
     }
+  }
+
+  loadBanner() async {
+    fetchBanner().then((res) async {
+      _banner!.add(res);
+      return res;
+    });
   }
 
   loadExclusiveOffer() async {
@@ -126,6 +149,95 @@ class _ShopPageState extends State<ShopPage> {
     }
   }
 
+  Widget adBanner(BuildContext context) {
+    return StreamBuilder(
+        stream: _banner!.stream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return const Text("error");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              height: 220,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const AnimatedShimmer(
+                height: 220,
+                width: double.infinity,
+                startColor: Colors.grey,
+                endColor: Colors.blueGrey,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                delayInMilliSeconds: Duration(milliseconds: 500),
+              ),
+            );
+          }
+          List<dynamic> model = snapshot.data;
+          return CarouselSlider(
+            options: CarouselOptions(
+              autoPlay: true,
+              viewportFraction: 1,
+              aspectRatio: 16 / 9,
+              height: 220,
+              initialPage: 0,
+              enlargeCenterPage: true,
+              onPageChanged: (index, value) {
+                debugPrint('Page changed: $value');
+              },
+            ),
+            items: List.generate(
+              snapshot.data.length,
+              (index) {
+                var post = model[index];
+                return GestureDetector(
+                  onTap: () {},
+                  child: Card(
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 250,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  "${post["image"]}",
+                                ),
+                              )),
+                        ),
+                        Positioned(
+                          bottom: 15,
+                          right: 10,
+                          child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30),
+                                border:
+                                    Border.all(width: 1.0, color: Colors.grey),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10, right: 10, top: 10, bottom: 10),
+                                child: Text("Shop Now",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.purple)),
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        });
+  }
+
   Widget exclusiveOffer(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
     var format =
@@ -138,7 +250,21 @@ class _ShopPageState extends State<ShopPage> {
             return const Text("error");
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Container(
+              height: 220,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const AnimatedShimmer(
+                height: 220,
+                width: double.infinity,
+                startColor: Colors.grey,
+                endColor: Colors.blueGrey,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                delayInMilliSeconds: Duration(milliseconds: 500),
+              ),
+            );
           }
           List<dynamic> model = snapshot.data;
           return SizedBox(
@@ -260,7 +386,21 @@ class _ShopPageState extends State<ShopPage> {
             return const Text("error");
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('loading');
+            return Container(
+              height: 220,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const AnimatedShimmer(
+                height: 220,
+                width: double.infinity,
+                startColor: Colors.grey,
+                endColor: Colors.blueGrey,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                delayInMilliSeconds: Duration(milliseconds: 500),
+              ),
+            );
           }
           List<dynamic> model = snapshot.data;
           return SizedBox(
@@ -382,7 +522,21 @@ class _ShopPageState extends State<ShopPage> {
             return const Text("error");
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('loading');
+            return Container(
+              height: 220,
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const AnimatedShimmer(
+                height: 220,
+                width: double.infinity,
+                startColor: Colors.grey,
+                endColor: Colors.blueGrey,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                delayInMilliSeconds: Duration(milliseconds: 500),
+              ),
+            );
           }
           List<dynamic> model = snapshot.data;
           return SizedBox(
@@ -498,6 +652,31 @@ class _ShopPageState extends State<ShopPage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: AppText(
+            text: "Product Details",
+            fontSize: Adaptive.sp(18),
+            color: Colors.red,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w600),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+              onPressed: () {
+                navigateToRoute(
+                    context,
+                    ExplorerPage(
+                      currentUserId: widget.currentUserId,
+                    ));
+              },
+              icon: const Icon(
+                Icons.search,
+                color: Colors.black,
+                size: 40,
+              ))
+        ],
+      ),
       body: Container(
         height: height,
         width: width,
@@ -510,90 +689,12 @@ class _ShopPageState extends State<ShopPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 50),
-
                     //Form Field for search bar....
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: searchTec,
-                        onChanged: (String? value) {
-                          // searchProduct(value!);
-                        },
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.black12,
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                          ),
-                          prefixIcon: Icon(CupertinoIcons.search),
-                          hintText: "Search Store",
-                          helperStyle: TextStyle(fontFamily: "Gilroy"),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
 
                     //Advert with Linear Gradient....
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      height: 120,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFFF6EFE9), Color(0xFFFACCCC)],
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: [0.2, 1.0],
-                          tileMode: TileMode.repeated,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/images/flower.png",
-                            width: 40,
-                          ),
-                          Image.asset("assets/images/fruits.png"),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Padding(
-                                  padding:
-                                      EdgeInsets.only(right: 100, left: 80)),
-                              AppText(
-                                  text: "Fresh Vegetables",
-                                  fontSize: Adaptive.sp(18),
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w600),
-                              AppText(
-                                  text: "Get Up To 40% OFF",
-                                  fontSize: Adaptive.sp(16),
-                                  color: const Color(0xff53B175),
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w600),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Image.asset(
-                                "assets/images/leaf.png",
-                                width: 35,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                    adBanner(
+                      context,
                     ),
-
                     // Exclusive offer Row..
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
