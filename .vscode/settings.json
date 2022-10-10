@@ -4,7 +4,9 @@
         "autovalidate",
         "creditcard",
         "Deleivery",
+        "Favourite",
         "formkey",
+        "glap",
         "prefs",
         "scaffoldkey"
     ],

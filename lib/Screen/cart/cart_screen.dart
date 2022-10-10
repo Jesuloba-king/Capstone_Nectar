@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:capstone/Screen/cart/components/body.dart';
-import 'package:capstone/Screen/cart/components/check_out_card.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../API_Services/models/cart.dart';
 import '../../widget/app_texts.dart';
+import 'components/body.dart';
+import 'components/check_out_card.dart';
 
-class CartPage extends StatelessWidget {
-  const CartPage({
+class CartScreen extends StatelessWidget {
+  const CartScreen({
     Key? key,
     required this.currentUserId,
   }) : super(key: key);
@@ -28,7 +28,6 @@ class CartPage extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       title: Column(
         children: [
           AppText(
