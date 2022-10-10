@@ -242,19 +242,18 @@ class _LoginPageState extends State<SignInPage> {
                                   });
                                   debugPrint("Email: ${_email.text}");
                                   debugPrint("Password: ${_password.text}");
-                                  navigateToRoute(context,
-                                      const HomeScreenPage(currentUserId: ""));
-                                  // bool isValid = await AuthService.login(
-                                  //     _email.text, _password.text);
-                                  // if (isValid) {
-                                  //   setState(() {
-                                  //     isProcessing = false;
-                                  //   });
-                                  //   navigateToRoute(
-                                  //       context,
-                                  //       const HomeScreenPage(
-                                  //           currentUserId: ""));
-                                  // }
+
+                                  bool isValid = await AuthService.login(
+                                      _email.text, _password.text);
+                                  if (isValid) {
+                                    setState(() {
+                                      isProcessing = false;
+                                    });
+                                    navigateToRoute(
+                                        context,
+                                        const HomeScreenPage(
+                                            currentUserId: ""));
+                                  }
                                 }
                               },
                               child: isProcessing

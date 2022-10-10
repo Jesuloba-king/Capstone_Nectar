@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:capstone/API_Services/cart_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'api_constant.dart';
@@ -50,6 +51,33 @@ class ApiService {
         }
         if (kDebugMode) {
           print('response.body');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+    return null;
+  }
+
+  Future<List<CartModel>?> getCarts() async {
+    List<CartModel> productModel = [];
+    try {
+      var url = Uri.parse(ApiConstants.cartBaseUrl);
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        productModel = cartModelFromJson(response.body);
+        if (kDebugMode) {
+          print(productModel);
+        }
+        return productModel;
+      } else {
+        if (kDebugMode) {
+          print(response.statusCode);
+        }
+        if (kDebugMode) {
+          print(response.body);
         }
       }
     } catch (e) {

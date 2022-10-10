@@ -1,6 +1,7 @@
 import 'package:capstone/Home%20Page/home_screen.dart';
 import 'package:capstone/Logins/sign_up.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // getUserInfo();
   }
@@ -235,10 +235,12 @@ class _LoginPageState extends State<LoginPage> {
                                 if (formKey.currentState!.validate()) {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return HomeScreenPage();
+                                    return const HomeScreenPage();
                                   }));
                                 } else {
-                                  print("unsuccessful");
+                                  if (kDebugMode) {
+                                    print("unsuccessful");
+                                  }
                                 }
                               },
                               child: Container(
@@ -294,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontFamily: 'Gilroy',
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xff53B175),
+                                  color: Color(0xff53B175),
                                 ),
                               ),
                             ),

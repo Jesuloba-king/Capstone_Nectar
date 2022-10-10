@@ -1,18 +1,14 @@
-import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:capstone/Screen/product_views/search_details_page.dart';
-import 'package:capstone/Screen/product_views/single_product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intrinsic_grid_view/intrinsic_grid_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../API_Services/api_service.dart';
 import '../API_Services/data_models.dart';
 import '../utilities/helper_functions.dart';
 import '../widget/app_texts.dart';
-import '../widget/colors.dart';
 
 class ExplorerPage extends StatefulWidget {
   const ExplorerPage({Key? key, required this.currentUserId}) : super(key: key);

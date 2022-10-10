@@ -11,7 +11,6 @@ class VerificationPage extends StatefulWidget {
 }
 
 class _VerificationPageState extends State<VerificationPage> {
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController controller = TextEditingController();
@@ -20,7 +19,7 @@ class _VerificationPageState extends State<VerificationPage> {
 
   void getPhoneNumber(String phoneNumber) async {
     PhoneNumber number =
-    await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
+        await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
 
     setState(() {
       this.number = number;
@@ -40,19 +39,27 @@ class _VerificationPageState extends State<VerificationPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset("assets/images/vegz.png",),
+            Image.asset(
+              "assets/images/vegz.png",
+            ),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Enter your mobile number",
+                  const Text(
+                    "Enter your mobile number",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 26, color: Colors.black87, fontFamily: "Gilroy",
-                        fontStyle: FontStyle.normal, fontWeight: FontWeight.w600
-                    ),),
-                  const SizedBox(height: 30,),
+                        fontSize: 26,
+                        color: Colors.black87,
+                        fontFamily: "Gilroy",
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   //International phone number field
                   Form(
                       key: formKey,
@@ -61,31 +68,33 @@ class _VerificationPageState extends State<VerificationPage> {
                         children: [
                           InternationalPhoneNumberInput(
                             onInputChanged: (PhoneNumber number) {
-                              print(number.phoneNumber);
+                              debugPrint(number.phoneNumber);
                             },
                             onInputValidated: (bool value) {
-                              print(value);
+                              debugPrint(value.toString());
                             },
                             selectorConfig: const SelectorConfig(
                               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                             ),
                             autoValidateMode: AutovalidateMode.disabled,
-                            selectorTextStyle: const TextStyle(color: Colors.black),
+                            selectorTextStyle:
+                                const TextStyle(color: Colors.black),
                             initialValue: number,
                             textFieldController: controller,
                             formatInput: false,
-                            keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
                             inputBorder: const OutlineInputBorder(),
                             onSaved: (PhoneNumber number) {
-                              print('On Saved: $number');
+                              debugPrint('On Saved: $number');
                             },
                           ),
                         ],
-                      )
-                  ),
+                      )),
 
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   //continue with next button
                 ],
               ),
@@ -101,19 +110,23 @@ class _VerificationPageState extends State<VerificationPage> {
           shape: BoxShape.circle,
           color: Color(0xff53B175),
         ),
-        child: FloatingActionButton.small(onPressed: (){
-          if (formKey.currentState!.validate()){
-            Navigator.push(context, MaterialPageRoute(builder: (context){
-              return const LocationPage();}));
-          }
-          else{
-            print("validation unsuccessful");
-          }
+        child: FloatingActionButton.small(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const LocationPage();
+              }));
+            } else {
+              debugPrint("validation unsuccessful");
+            }
           },
-          child: const Icon(CupertinoIcons.arrow_right_circle, size: 35,),
+          child: const Icon(
+            CupertinoIcons.arrow_right_circle,
+            size: 35,
+          ),
           // backgroundColor: const Color(0xff53B175),
         ),
-      ) ,
+      ),
     );
   }
 }

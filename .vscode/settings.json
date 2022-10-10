@@ -5,6 +5,7 @@
         "creditcard",
         "Deleivery",
         "formkey",
+        "prefs",
         "scaffoldkey"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"

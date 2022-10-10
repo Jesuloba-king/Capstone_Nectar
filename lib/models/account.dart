@@ -95,7 +95,7 @@ class _AccountPageState extends State<AccountPage> {
                       Icons.shopping_bag_outlined,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -135,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                       Icons.newspaper,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -176,7 +176,7 @@ class _AccountPageState extends State<AccountPage> {
                       CupertinoIcons.location_solid,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -217,7 +217,7 @@ class _AccountPageState extends State<AccountPage> {
                       CupertinoIcons.creditcard,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -258,7 +258,7 @@ class _AccountPageState extends State<AccountPage> {
                       CupertinoIcons.tickets,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -299,7 +299,7 @@ class _AccountPageState extends State<AccountPage> {
                       Icons.notifications_on_outlined,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -340,7 +340,7 @@ class _AccountPageState extends State<AccountPage> {
                       Icons.help_outline_sharp,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(
@@ -381,7 +381,7 @@ class _AccountPageState extends State<AccountPage> {
                       Icons.error_outline_sharp,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     const Text(

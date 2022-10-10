@@ -1,11 +1,10 @@
 import 'package:capstone/Screen/account_page.dart';
 import 'package:capstone/Screen/cart_page.dart';
-import 'package:capstone/Screen/explore_page.dart';
-import 'package:capstone/Screen/favorite_page.dart';
 import 'package:capstone/Screen/shop_page.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/colors.dart';
+import 'favorite_product.dart';
 
 class HomeScreenPage extends StatefulWidget {
   const HomeScreenPage({Key? key, required this.currentUserId})
@@ -92,7 +91,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                 CartPage(
                   currentUserId: widget.currentUserId,
                 ),
-                FavoritePage(
+                FavoriteProductPage(
                   currentUserId: widget.currentUserId,
                 ),
                 AccountPage(

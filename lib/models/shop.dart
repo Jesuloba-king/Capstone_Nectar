@@ -882,7 +882,7 @@ class ShopPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Padding(padding: EdgeInsets.all(10)),
+                              const Padding(padding: EdgeInsets.all(10)),
                               InkWell(
                                 onTap: () {},
                                 child: Image.asset("assets/images/pulse.png"),

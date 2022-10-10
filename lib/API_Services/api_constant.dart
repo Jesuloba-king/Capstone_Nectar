@@ -13,4 +13,6 @@ class ApiConstants {
       "https://fakestoreapi.com/products/category/men's clothing";
   static String womenClothingBaseUrl =
       "https://fakestoreapi.com/products/category/women's clothing";
+
+  static String cartBaseUrl = "https://fakestoreapi.com/carts/user/2";
 }
