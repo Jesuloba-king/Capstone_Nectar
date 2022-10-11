@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../widget/app_texts.dart';
+import 'cart_page.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key, required this.currentUserId}) : super(key: key);
+
   final String currentUserId;
 
   @override
@@ -50,9 +52,8 @@ class _ShopPageState extends State<AccountPage> {
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.grey,
-                              borderRadius: BorderRadius.circular(20)
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(20)),
                           width: width,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -64,10 +65,12 @@ class _ShopPageState extends State<AccountPage> {
                                   radius: 100,
                                   backgroundColor: Colors.teal,
                                   child: CircleAvatar(
-                                    radius: 95,
-                                    backgroundColor: Colors.blueGrey,
-                                      child: Image.asset("assets/images/account.png", fit: BoxFit.cover,)
-                                  ),
+                                      radius: 95,
+                                      backgroundColor: Colors.blueGrey,
+                                      child: Image.asset(
+                                        "assets/images/account.png",
+                                        fit: BoxFit.cover,
+                                      )),
                                 ),
                               ),
                               //texts
@@ -78,7 +81,8 @@ class _ShopPageState extends State<AccountPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         AppText(
                                             text: 'Username: ',
@@ -87,9 +91,12 @@ class _ShopPageState extends State<AccountPage> {
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w500),
                                         InkWell(
-                                          onTap: () {},
-                                          child: Image.asset('assets/icons/pencil.png', height: 20, width: 30,)
-                                        ),
+                                            onTap: () {},
+                                            child: Image.asset(
+                                              'assets/icons/pencil.png',
+                                              height: 20,
+                                              width: 30,
+                                            )),
                                       ],
                                     ),
                                     AppText(
@@ -97,8 +104,7 @@ class _ShopPageState extends State<AccountPage> {
                                         fontSize: Adaptive.sp(18),
                                         color: Colors.black,
                                         fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w500
-                                    ),
+                                        fontWeight: FontWeight.w500),
                                   ],
                                 ),
                               ),
@@ -113,19 +119,22 @@ class _ShopPageState extends State<AccountPage> {
                         ),
                       ),
                       ListTile(
-                        leading: const Icon(Icons.shopping_bag_outlined,
-                          size: 30, color: Colors.black,),
+                        leading: const Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 30,
+                          color: Colors.black,
+                        ),
                         title: AppText(
                             text: "Orders",
                             fontSize: Adaptive.sp(18),
                             color: Colors.black,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold
-                        ),
-                        onTap: (){
-                          // Navigator.push(context, MaterialPageRoute(builder: (context){
-                          //
-                          // }));
+                            fontWeight: FontWeight.bold),
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const CartPage(currentUserId: '',);
+                          }));
                         },
                       ),
                       const Expanded(
@@ -136,23 +145,24 @@ class _ShopPageState extends State<AccountPage> {
                       ),
                       //Orders
                       ListTile(
-                        leading: const Icon(Icons.newspaper,
-                          size: 30, color: Colors.black,),
-                        title: AppText(
-                            text: "My Details",
-                            fontSize: Adaptive.sp(18),
+                          leading: const Icon(
+                            Icons.newspaper,
+                            size: 30,
                             color: Colors.black,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold
-                        ),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)
-                            {
+                          ),
+                          title: AppText(
+                              text: "My Details",
+                              fontSize: Adaptive.sp(18),
+                              color: Colors.black,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold),
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
                               //Details class is at the end of this page....
                               return const Details();
                             }));
-                          }
-                      ),
+                          }),
 
                       const Expanded(
                         child: Divider(
@@ -162,56 +172,71 @@ class _ShopPageState extends State<AccountPage> {
                       ),
 
                       ListTile(
-                        leading: const Icon(CupertinoIcons.tickets,
-                          size: 30, color: Colors.black,),
+                        leading: const Icon(
+                          CupertinoIcons.tickets,
+                          size: 30,
+                          color: Colors.black,
+                        ),
                         title: AppText(
                             text: "Promo Code",
                             fontSize: Adaptive.sp(18),
                             color: Colors.black,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold
-                        ),
-                        onTap: (){
-                          showCupertinoDialog(context: context, builder: (BuildContext context){
-                            return CupertinoAlertDialog(
-                              title: AppText(
-                                  text: "Promo Code",
-                                  fontSize: Adaptive.sp(20),
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500
-                              ),
-                              content: AppText(
-                                  textAlign: TextAlign.center,
-                                  text: "You currently have no available Voucher."
-                                  " All your available Vouchers will be displayed here",
-                                  fontSize: Adaptive.sp(18),
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500
-                              ),
-                              actions: [
-                                CupertinoButton(onPressed: () {Navigator.pop(context);},
-                                  child: AppText(
-                                    text: "cancel",
-                                    fontSize: Adaptive.sp(18),
-                                    color: Colors.redAccent,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w700,
-                                  ),),
-                                CupertinoButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return const HomeScreenPage(currentUserId: '',);
-                                }));},
-                                  child: AppText(
-                                    text: "Continue Shopping",
-                                    fontSize: Adaptive.sp(18),
-                                    color: Colors.orangeAccent,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                  ),),
-                              ],
-                            );
-                          });
+                            fontWeight: FontWeight.bold),
+                        onTap: () {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CupertinoAlertDialog(
+                                  title: AppText(
+                                      text: "Promo Code",
+                                      fontSize: Adaptive.sp(20),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w500),
+                                  content: AppText(
+                                      textAlign: TextAlign.center,
+                                      text:
+                                          "You currently have no available Voucher."
+                                          " All your available Vouchers will be displayed here",
+                                      fontSize: Adaptive.sp(18),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w500),
+                                  actions: [
+                                    CupertinoButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: AppText(
+                                        text: "cancel",
+                                        fontSize: Adaptive.sp(18),
+                                        color: Colors.redAccent,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    CupertinoButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return const HomeScreenPage(
+                                            currentUserId: '',
+                                          );
+                                        }));
+                                      },
+                                      child: AppText(
+                                        text: "Continue Shopping",
+                                        fontSize: Adaptive.sp(18),
+                                        color: Colors.orangeAccent,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
                         },
                       ),
 
@@ -223,46 +248,53 @@ class _ShopPageState extends State<AccountPage> {
                         ),
                       ),
                       ListTile(
-                        onTap: (){
-                          showCupertinoDialog(context: context, builder: (BuildContext context){
-                            return CupertinoAlertDialog(
-                              title: AppText(
-                                  text: "Help",
-                                  fontSize: Adaptive.sp(20),
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500
-                              ),
-                              content: AppText(
-                                textAlign: TextAlign.center,
-                                  text: "For more help, contact www.chee-tech.com \n or \nayojesukunumi1@gmail.com",
-                                  fontSize: Adaptive.sp(18),
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700
-                              ),
-                              actions: [
-                                CupertinoButton(onPressed: () {Navigator.pop(context);},
-                                  child: AppText(
-                                      text: "cancel",
-                                      fontSize: Adaptive.sp(18),
-                                      color: Colors.redAccent,
+                        onTap: () {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CupertinoAlertDialog(
+                                  title: AppText(
+                                      text: "Help",
+                                      fontSize: Adaptive.sp(20),
+                                      color: Colors.black,
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                  ),),
-                              ],
-                            );
-                          });
+                                      fontWeight: FontWeight.w500),
+                                  content: AppText(
+                                      textAlign: TextAlign.center,
+                                      text:
+                                          "For more help, contact www.chee-tech.com \n or \nayojesukunumi1@gmail.com",
+                                      fontSize: Adaptive.sp(18),
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700),
+                                  actions: [
+                                    CupertinoButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: AppText(
+                                        text: "cancel",
+                                        fontSize: Adaptive.sp(18),
+                                        color: Colors.redAccent,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
                         },
-                        leading: const Icon(Icons.help_outline_sharp,
-                          size: 30, color: Colors.black,),
+                        leading: const Icon(
+                          Icons.help_outline_sharp,
+                          size: 30,
+                          color: Colors.black,
+                        ),
                         title: AppText(
                             text: "Help",
                             fontSize: Adaptive.sp(18),
                             color: Colors.black,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
 
                       // About Column...
@@ -273,27 +305,35 @@ class _ShopPageState extends State<AccountPage> {
                         ),
                       ),
                       ListTile(
-                        onTap: (){
-                         showAboutDialog(context: context,
-                         applicationIcon: Image.asset('assets/images/nec.png', height: 100,),
-                           applicationName: 'Nectar Clone',
-                           applicationLegalese: 'Legalese',
-                           applicationVersion: 'version 1.0.0',
-                           children: [
-                             const Text('This is an online store application where you can buy products and at the speed of light and get it delivered to your preferred location.'
-                               ' This application is developed by Flutter.',
-                               softWrap: true, textAlign: TextAlign.center,)
-                           ]
-                         );
+                        onTap: () {
+                          showAboutDialog(
+                              context: context,
+                              applicationIcon: Image.asset(
+                                'assets/images/nec.png',
+                                height: 100,
+                              ),
+                              applicationName: 'Nectar Clone',
+                              applicationLegalese: 'Legalese',
+                              applicationVersion: 'version 1.0.0',
+                              children: [
+                                const Text(
+                                  'This is an online store application where you can buy products and at the speed of light and get it delivered to your preferred location.'
+                                  ' This application is developed by Flutter.',
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                )
+                              ]);
                         },
-                        leading: Image.asset('assets/icons/info.gif', width: 30,),
+                        leading: Image.asset(
+                          'assets/icons/info.gif',
+                          width: 30,
+                        ),
                         title: AppText(
                             text: "About",
                             fontSize: Adaptive.sp(18),
                             color: Colors.black,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
 
                       const Expanded(
@@ -322,44 +362,56 @@ class _ShopPageState extends State<AccountPage> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      showCupertinoDialog(context: context,
-                                          builder: (BuildContext context){
-                                        return CupertinoAlertDialog(
-                                          title: AppText(
-                                              text: "Exit App",
-                                              fontSize: Adaptive.sp(20),
-                                              color: Colors.black,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w500
-                                          ),
-                                          content: AppText(
-                                              text: "Do you wish to logout?",
-                                              fontSize: Adaptive.sp(18),
-                                              color: Colors.black,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w500
-                                          ),
-                                          actions: [
-                                            CupertinoButton(onPressed: () {Navigator.pop(context);},
-                                              child: AppText(
-                                                text: "cancel",
-                                                fontSize: Adaptive.sp(18),
-                                                color: Colors.black,
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w500
-                                            ),),
-                                            CupertinoButton(onPressed: () {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                return const SignInPage();}));},
-                                              child: AppText(
-                                                  text: "Proceed",
-                                                  fontSize: Adaptive.sp(18),
-                                                  color: Colors.pink,
+                                      showCupertinoDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CupertinoAlertDialog(
+                                              title: AppText(
+                                                  text: "Exit App",
+                                                  fontSize: Adaptive.sp(20),
+                                                  color: Colors.black,
                                                   fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w500
-                                              ),),
-                                          ],
-                                        );
+                                                  fontWeight: FontWeight.w500),
+                                              content: AppText(
+                                                  text:
+                                                      "Do you wish to logout?",
+                                                  fontSize: Adaptive.sp(18),
+                                                  color: Colors.black,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w500),
+                                              actions: [
+                                                CupertinoButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: AppText(
+                                                      text: "cancel",
+                                                      fontSize: Adaptive.sp(18),
+                                                      color: Colors.black,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                CupertinoButton(
+                                                  onPressed: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) {
+                                                      return const SignInPage();
+                                                    }));
+                                                  },
+                                                  child: AppText(
+                                                      text: "Proceed",
+                                                      fontSize: Adaptive.sp(18),
+                                                      color: Colors.pink,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ],
+                                            );
                                           });
                                     },
                                     child: Row(
@@ -372,8 +424,7 @@ class _ShopPageState extends State<AccountPage> {
                                             fontSize: Adaptive.sp(20),
                                             color: Colors.black,
                                             fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.bold
-                                        ),
+                                            fontWeight: FontWeight.bold),
                                       ],
                                     ),
                                   ),
@@ -412,16 +463,17 @@ class Details extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Colors.green[100],
         leading: IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(CupertinoIcons.back,)),
+            icon: const Icon(
+              CupertinoIcons.back,
+            )),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-          )
-        ),
+            borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+        )),
       ),
       body: Column(
         children: [
@@ -440,24 +492,19 @@ class Details extends StatelessWidget {
                         fontSize: Adaptive.sp(20),
                         color: Colors.black,
                         fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold
-                    ),
-
+                        fontWeight: FontWeight.bold),
                     AppText(
                         text: "Delivery Address",
                         fontSize: Adaptive.sp(18),
                         color: Colors.black,
                         fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500
-                    ),
-
+                        fontWeight: FontWeight.w500),
                     AppText(
                         text: "Phone number",
                         fontSize: Adaptive.sp(18),
                         color: Colors.black,
                         fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                   ],
                 ),
               ),
