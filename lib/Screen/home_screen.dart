@@ -26,6 +26,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
     double width = MediaQuery.of(context).size.width;
     return DefaultTabController(
         length: 4,
+        
         child: Scaffold(
             key: scaffoldkey,
             backgroundColor: Colors.white,
