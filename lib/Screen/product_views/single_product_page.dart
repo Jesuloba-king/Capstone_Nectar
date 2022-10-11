@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:animated_shimmer/animated_shimmer.dart';
+import 'package:capstone/API_Services/models/service/cart_service.dart';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -283,7 +286,25 @@ class _MyHomePageState extends State<ProductDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       appButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          bool isValid = await CartModelService.addToCart(
+                            widget.currentUserId,
+                            productModel.price.toString(),
+                            productModel.id,
+                            productModel.title.toString(),
+                            productModel.category.toString(),
+                            productModel.description.toString(),
+                            productModel.image.toString(),
+                          );
+
+                          if (isValid) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Added to cart"),
+                              ),
+                            );
+                          }
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

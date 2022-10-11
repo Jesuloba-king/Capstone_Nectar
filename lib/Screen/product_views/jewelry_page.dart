@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:animated_shimmer/animated_shimmer.dart';
+import 'package:capstone/API_Services/models/service/cart_service.dart';
 import 'package:capstone/Screen/product_views/single_product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -194,7 +197,28 @@ class _MyHomePageState extends State<JewelryPage> {
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w600),
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () async {
+                                            bool isValid =
+                                                await CartModelService
+                                                    .addToCart(
+                                                        widget.currentUserId,
+                                                        post["price"],
+                                                        post["id"],
+                                                        post["title"],
+                                                        post["category"],
+                                                        post["description"],
+                                                        post["image"]);
+
+                                            if (isValid) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content:
+                                                      Text("Added to cart"),
+                                                ),
+                                              );
+                                            }
+                                          },
                                           child: Container(
                                             width: 30,
                                             height: 30,

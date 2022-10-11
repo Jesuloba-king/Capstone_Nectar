@@ -7,7 +7,7 @@ import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../models/auth_service.dart';
+import '../API_Services/models/service/auth_service.dart';
 import '../widget/spacer.dart';
 
 class SignInPage extends StatefulWidget {
