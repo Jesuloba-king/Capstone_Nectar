@@ -40,9 +40,11 @@ dependencies:
   firebase_core: ^1.24.0
   flutter:
     sdk: flutter
+  flutter_paystack: ^1.0.6
+  flutter_paystack_payment: ^0.1.2+6
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.5
-  flutterwave: ^1.0.3
+  flutterwave_standard: ^1.0.4
   google_sign_in: ^5.4.2
   http: ^0.13.5
   intl: ^0.17.0

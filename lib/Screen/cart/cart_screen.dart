@@ -5,7 +5,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../API_Services/models/cart.dart';
 import '../../widget/app_texts.dart';
 import 'components/body.dart';
-import 'components/check_out_card.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({
@@ -18,9 +17,6 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Body(
-        currentUserId: currentUserId,
-      ),
-      bottomNavigationBar: CheckoutCard(
         currentUserId: currentUserId,
       ),
     );

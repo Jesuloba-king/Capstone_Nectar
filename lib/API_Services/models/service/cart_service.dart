@@ -1,15 +1,21 @@
+import 'dart:io';
+
 import 'package:capstone/API_Services/models/user_model.dart';
 import 'package:capstone/API_Services/models/user_model.dart' as model;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterwave/flutterwave.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class CartModelService {
   static final _fireStore = FirebaseFirestore.instance;
   static final User? result = FirebaseAuth.instance.currentUser;
+  String publicKeyTest =
+      'pk_test_ieu49ej839u984urenewuwe06eishra'; //pass in the public test key obtained from paystack dashboard here
+
+  final plugin = PaystackPlugin();
 
   static Future<bool> addToCart(
     String uid,
@@ -84,37 +90,37 @@ class CartModelService {
     return res;
   }
 
-  handlePaymentInitialization(
-    BuildContext context,
-    String name,
-    String phone,
-    String email,
-    String amount,
-  ) async {
-    final flutterwave = Flutterwave.forUIPayment(
-        context: context,
-        fullName: name,
-        phoneNumber: phone,
-        email: email,
-        amount: amount,
-        //Use your Public and Encryptions Keys from your Flutterwave account on the dashboard
-        encryptionKey: "Your Encryptions Key",
-        publicKey: "Your Public Key",
-        currency: FlutterwaveCurrency.NGN,
-        txRef: DateTime.now().toIso8601String(),
-        //Setting DebugMode below to true since will be using test mode.
-        //You can set it to false when using production environment.
-        isDebugMode: true,
-        //configure the the type of payments that your business will accept
-        acceptAccountPayment: true,
-        acceptCardPayment: true,
-        acceptUSSDPayment: true);
-    final response = await flutterwave.initializeForUiPayments();
-    // ignore: unnecessary_null_comparison
-    if (response != null) {
-      debugPrint(response.data!.status);
+  String _getReference() {
+    var platform = (Platform.isIOS) ? 'iOS' : 'Android';
+    final thisDate = DateTime.now().millisecondsSinceEpoch;
+    return 'ChargedFrom${platform}_$thisDate';
+  }
+
+  Future<void> chargeCard(
+      {required BuildContext context,
+      required int amount,
+      required String email}) async {
+    var charge = Charge()
+      ..amount = amount *
+          100 //the money should be in kobo hence the need to multiply the value by 100
+      ..reference = _getReference()
+      ..putCustomField('custom_id',
+          '846gey6w') //to pass extra parameters to be retrieved on the response from Paystack
+      ..email = email;
+
+    CheckoutResponse response = await plugin.checkout(
+      context,
+      method: CheckoutMethod.card,
+      charge: charge,
+    );
+
+    //check if the response is true or not
+    if (response.status == true) {
+      //you can send some data from the response to an API or use webhook to record the payment on a database
+      debugPrint('Payment was successful!!!');
     } else {
-      debugPrint("No Response!");
+      //the payment wasn't successful or the user cancelled the payment
+      debugPrint('Payment Failed!!!');
     }
   }
 }

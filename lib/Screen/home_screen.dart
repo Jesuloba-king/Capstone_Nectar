@@ -110,7 +110,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                     ),
                     Tab(
                       icon: Image.asset(
-                        "assets/images/account.gif",
+                        "assets/images/account.png",
                         height: 30,
                         width: 30,
                       ),

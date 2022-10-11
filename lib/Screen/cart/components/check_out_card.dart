@@ -1,3 +1,4 @@
+import 'package:capstone/API_Services/models/service/cart_service.dart';
 import 'package:capstone/widget/app_buttons.dart';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
@@ -8,11 +9,17 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../utilities/helper_functions.dart';
 
 class CheckoutCard extends StatelessWidget {
-  const CheckoutCard({Key? key, required this.currentUserId})
-      : super(
+  const CheckoutCard({
+    Key? key,
+    required this.currentUserId,
+    required this.email,
+    required this.amountTotal,
+  }) : super(
           key: key,
         );
   final String currentUserId;
+  final String email;
+  final int amountTotal;
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +80,14 @@ class CheckoutCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text.rich(
+                  Text.rich(
                     TextSpan(
                       text: "Total:\n",
                       children: [
                         TextSpan(
-                          text: "\$337.15",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          text: "\$$amountTotal",
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.black),
                         ),
                       ],
                     ),
@@ -87,7 +95,11 @@ class CheckoutCard extends StatelessWidget {
                   SizedBox(
                     width: 190,
                     child: appButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        // await payWithCard();
+                        CartModelService().chargeCard(
+                            amount: amountTotal, context: context, email: '');
+                      },
                       btnColor: AppColors.primary,
                       child: AppText(
                           text: "Check Out",

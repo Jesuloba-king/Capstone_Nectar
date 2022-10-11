@@ -20,9 +20,6 @@ class CartPage extends StatelessWidget {
       body: Body(
         currentUserId: currentUserId,
       ),
-      bottomNavigationBar: CheckoutCard(
-        currentUserId: currentUserId,
-      ),
     );
   }
 
