@@ -5,10 +5,13 @@ import 'package:capstone/utilities/helper_functions.dart';
 import 'package:capstone/widget/app_buttons.dart';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../models/auth_service.dart';
+import '../API_Services/models/service/auth_service.dart';
 import '../widget/spacer.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -48,6 +51,25 @@ class _LoginPageState extends State<SignUpPage> {
     _confirmPassword.dispose();
     super.dispose();
   }
+
+  bool isChecked = false;
+  urlString(String? url) async {
+    final link = Uri.parse(url!);
+    if (await canLaunchUrl(link)) {
+      await launchUrl(link);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static final _fireStore = FirebaseFirestore.instance;
+
+  Future<bool> userExists(String email) async => (await _fireStore
+          .collection('Users')
+          .where("Email", isEqualTo: email)
+          .get())
+      .docs
+      .isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -301,22 +323,75 @@ class _LoginPageState extends State<SignUpPage> {
                               onPressed: () async {
                                 _focusEmail.unfocus();
                                 _focusPassword.unfocus();
+                                _focusConfirmPassword.unfocus();
                                 if (_formkey.currentState!.validate()) {
                                   setState(() {
                                     isProcessing = true;
                                   });
                                   debugPrint("Email: ${_email.text}");
                                   debugPrint("Password: ${_password.text}");
-                                  bool isValid = await AuthService.signUp(
-                                      _email.text, _password.text);
-                                  if (isValid) {
+                                  debugPrint(
+                                      "Confirm Password: ${_confirmPassword.text}");
+
+                                  var connectivityResult = await (Connectivity()
+                                      .checkConnectivity());
+                                  if (connectivityResult ==
+                                          ConnectivityResult.mobile ||
+                                      connectivityResult ==
+                                          ConnectivityResult.wifi) {
+                                    bool docExist = await userExists(
+                                        _email.text.toString());
+
+                                    if (docExist) {
+                                      setState(() {
+                                        isProcessing = false;
+                                      });
+                                      showInfoAlertWithAction(
+                                          context,
+                                          "User Exist",
+                                          "User Email Already Exist",
+                                          () {});
+                                    } else {
+                                      if (isChecked == true) {
+                                        bool isValid = await AuthService.signUp(
+                                          _email.text.trim(),
+                                          _password.text.trim(),
+                                        );
+                                        if (isValid) {
+                                          String userId = AuthService.reUserId;
+                                          if (userId.isNotEmpty) {
+                                            setState(() {
+                                              isProcessing = false;
+                                            });
+                                            navigateAndRemoveUntilRoute(
+                                                context,
+                                                HomeScreenPage(
+                                                  currentUserId: userId,
+                                                ));
+                                          } else {
+                                            return;
+                                          }
+                                        }
+                                      } else {
+                                        setState(() {
+                                          isProcessing = false;
+                                        });
+                                        showInfoAlertWithAction(
+                                            context,
+                                            "Terms and Conditions",
+                                            "Please agree to our terms and conditions to proceed",
+                                            () {});
+                                      }
+                                    }
+                                  } else {
                                     setState(() {
                                       isProcessing = false;
                                     });
-                                    navigateToRoute(
+                                    showInfoAlertWithAction(
                                         context,
-                                        const HomeScreenPage(
-                                            currentUserId: ""));
+                                        "Network Connection",
+                                        "No Internet Connection",
+                                        () {});
                                   }
                                 }
                               },

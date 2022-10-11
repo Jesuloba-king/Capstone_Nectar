@@ -1,11 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:animated_shimmer/animated_shimmer.dart';
+import 'package:capstone/API_Services/models/service/cart_service.dart';
 import 'package:capstone/Screen/explore_page.dart';
 import 'package:capstone/Screen/product_views/elctronics_page.dart';
 import 'package:capstone/Screen/product_views/exclusive_offer_page.dart';
 import 'package:capstone/utilities/helper_functions.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -148,6 +152,16 @@ class _ShopPageState extends State<ShopPage> {
       productModel = searchProductList;
     }
   }
+
+  static final _fireStore = FirebaseFirestore.instance;
+  Future<bool> itemExists(dynamic docId) async => (await _fireStore
+          .collection('Users')
+          .doc(widget.currentUserId)
+          .collection("UserCart")
+          .where("Id", isEqualTo: docId)
+          .get())
+      .docs
+      .isNotEmpty;
 
   Widget adBanner(BuildContext context) {
     return StreamBuilder(
@@ -339,7 +353,26 @@ class _ShopPageState extends State<ShopPage> {
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      bool isValid =
+                                          await CartModelService.addToCart(
+                                              widget.currentUserId,
+                                              post["price"],
+                                              post["id"],
+                                              post["title"],
+                                              post["category"],
+                                              post["description"],
+                                              post["image"]);
+
+                                      if (isValid) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Added to cart"),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: Container(
                                       width: 30,
                                       height: 30,
@@ -475,7 +508,26 @@ class _ShopPageState extends State<ShopPage> {
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      bool isValid =
+                                          await CartModelService.addToCart(
+                                              widget.currentUserId,
+                                              post["price"],
+                                              post["id"],
+                                              post["title"],
+                                              post["category"],
+                                              post["description"],
+                                              post["image"]);
+
+                                      if (isValid) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Added to cart"),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: Container(
                                       width: 30,
                                       height: 30,
@@ -611,7 +663,26 @@ class _ShopPageState extends State<ShopPage> {
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w600),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      bool isValid =
+                                          await CartModelService.addToCart(
+                                              widget.currentUserId,
+                                              post["price"],
+                                              post["id"],
+                                              post["title"],
+                                              post["category"],
+                                              post["description"],
+                                              post["image"]);
+
+                                      if (isValid) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Added to cart"),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: Container(
                                       width: 30,
                                       height: 30,
