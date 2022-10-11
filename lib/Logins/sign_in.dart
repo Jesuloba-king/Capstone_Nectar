@@ -222,7 +222,7 @@ class _LoginPageState extends State<SignInPage> {
                             child: GestureDetector(
                               onTap: () {},
                               child: AppText(
-                                  text: "Forget password?",
+                                  text: "Forgot password?",
                                   textAlign: TextAlign.center,
                                   fontSize: Adaptive.sp(18),
                                   color: Colors.white,
