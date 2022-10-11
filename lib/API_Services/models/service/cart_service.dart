@@ -3,6 +3,7 @@ import 'package:capstone/API_Services/models/user_model.dart' as model;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterwave/flutterwave.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,9 +58,10 @@ class CartModelService {
 
   Future<List<UseCartModel>> retrieveCart(String userId) async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await _fireStore
-        .collection('CarerRegisters')
+        .collection('Users')
         .doc(userId)
         .collection('UserCart')
+        .orderBy('Timestamp', descending: true)
         .get();
     return snapshot.docs
         .map((docsSnapshot) => UseCartModel.fromSnap(docsSnapshot))
@@ -80,5 +82,39 @@ class CartModelService {
       res = err.toString();
     }
     return res;
+  }
+
+  handlePaymentInitialization(
+    BuildContext context,
+    String name,
+    String phone,
+    String email,
+    String amount,
+  ) async {
+    final flutterwave = Flutterwave.forUIPayment(
+        context: context,
+        fullName: name,
+        phoneNumber: phone,
+        email: email,
+        amount: amount,
+        //Use your Public and Encryptions Keys from your Flutterwave account on the dashboard
+        encryptionKey: "Your Encryptions Key",
+        publicKey: "Your Public Key",
+        currency: FlutterwaveCurrency.NGN,
+        txRef: DateTime.now().toIso8601String(),
+        //Setting DebugMode below to true since will be using test mode.
+        //You can set it to false when using production environment.
+        isDebugMode: true,
+        //configure the the type of payments that your business will accept
+        acceptAccountPayment: true,
+        acceptCardPayment: true,
+        acceptUSSDPayment: true);
+    final response = await flutterwave.initializeForUiPayments();
+    // ignore: unnecessary_null_comparison
+    if (response != null) {
+      debugPrint(response.data!.status);
+    } else {
+      debugPrint("No Response!");
+    }
   }
 }
