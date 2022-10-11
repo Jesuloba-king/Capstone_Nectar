@@ -1,5 +1,14 @@
+import 'package:capstone/Screen/product_views/search_details_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../API_Services/api_service.dart';
+import '../API_Services/data_models.dart';
+import '../utilities/helper_functions.dart';
+import '../widget/app_texts.dart';
 
 class ExplorerPage extends StatefulWidget {
   const ExplorerPage({Key? key, required this.currentUserId}) : super(key: key);
@@ -10,73 +19,165 @@ class ExplorerPage extends StatefulWidget {
 }
 
 class _ShopPageState extends State<ExplorerPage> {
-  late TextEditingController searchTec;
+  TextEditingController searchTEC = TextEditingController();
+  bool isLoading = false;
+  late List<ProductModel> productModel = [];
+  late List<ProductModel> searchProductList = [];
 
-  @override
-  void initState() {
-    searchTec = TextEditingController();
+  getProducts() async {
+    setState(() {
+      isLoading = true;
+    });
 
-    super.initState();
+    final data = await ApiService().getProducts();
+    setState(() {
+      productModel = data!;
+      searchProductList = data;
+      isLoading = false;
+      if (kDebugMode) {
+        print(productModel);
+      }
+    });
   }
 
   @override
-  void dispose() {
-    searchTec.dispose();
+  void initState() {
+    super.initState();
+    getProducts();
+    // getUserList();
+  }
 
-    super.dispose();
+  searchProducts(String? search) {
+    List<ProductModel> searchList = [];
+    searchList.addAll(searchProductList);
+    if (search!.isNotEmpty) {
+      List<ProductModel> searchResults = [];
+      for (var item in searchList) {
+        if (item.title!.toLowerCase().contains(search.toLowerCase())) {
+          searchResults.add(item);
+        }
+      }
+      setState(() {
+        productModel = searchResults;
+      });
+
+      return;
+    } else {
+      productModel = searchProductList;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        height: height,
-        width: width,
-        color: Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 50),
-              const Text(
-                "Find Products",
-                style: TextStyle(
-                  fontFamily: "Gilroy-ExtraBold",
-                  fontStyle: FontStyle.normal,
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              //Form Field for search bar....
-              TextFormField(
-                controller: searchTec,
-                onChanged: (String? value) {
-                  // searchProduct(value!);
-                },
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.black12,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                  ),
-                  prefixIcon: Icon(CupertinoIcons.search),
-                  hintText: "Search Store",
-                  helperStyle: TextStyle(fontFamily: "Gilroy"),
-                ),
-              ),
-
-              const SizedBox(
-                height: 10,
-              ),
-            ],
+    Locale locale = Localizations.localeOf(context);
+    var format =
+        NumberFormat.simpleCurrency(locale: locale.toString(), name: "USD");
+    var name = format.currencySymbol;
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            title: AppText(
+                text: "Search Here",
+                fontSize: Adaptive.sp(18),
+                color: Colors.black,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w600),
           ),
-        ),
-      ),
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                )
+              : productModel.isNotEmpty
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          //AppBar with a color gradient style....
+                          children: [
+                            SizedBox(
+                              height: 10.h,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                child: TextFormField(
+                                  controller: searchTEC,
+                                  onChanged: (String? value) {
+                                    searchProducts(value!);
+                                  },
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.black12,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(40.0)),
+                                    ),
+                                    prefixIcon: Icon(CupertinoIcons.search),
+                                    hintText: "Search Store",
+                                    helperStyle:
+                                        TextStyle(fontFamily: "Gilroy"),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: productModel.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ListTile(
+                                          onTap: () {
+                                            navigateToRoute(
+                                                context,
+                                                DetailScreen(
+                                                  id: productModel[index].id,
+                                                  category: productModel[index]
+                                                      .category
+                                                      .toString(),
+                                                  currentUserId:
+                                                      widget.currentUserId,
+                                                ));
+                                          },
+                                          title: AppText(
+                                              text:
+                                                  "${productModel[index].title}",
+                                              fontSize: Adaptive.sp(18),
+                                              color: Colors.black,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w600),
+                                          leading: Image.network(
+                                            productModel[index]
+                                                .image
+                                                .toString(),
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          subtitle: AppText(
+                                              text:
+                                                  "$name${productModel[index].price}",
+                                              fontSize: Adaptive.sp(16),
+                                              color: Colors.red,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w600),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: Text("No Product is available"),
+                    )),
     );
   }
 }

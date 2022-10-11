@@ -1,11 +1,10 @@
 import 'package:capstone/Screen/account_page.dart';
 import 'package:capstone/Screen/cart_page.dart';
-import 'package:capstone/Screen/explore_page.dart';
-import 'package:capstone/Screen/favorite_page.dart';
 import 'package:capstone/Screen/shop_page.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/colors.dart';
+import 'favorite_product.dart';
 
 class HomeScreenPage extends StatefulWidget {
   const HomeScreenPage({Key? key, required this.currentUserId})
@@ -26,7 +25,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
     );
     double width = MediaQuery.of(context).size.width;
     return DefaultTabController(
-        length: 5,
+        length: 4,
         child: Scaffold(
             key: scaffoldkey,
             backgroundColor: Colors.white,
@@ -58,17 +57,9 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                   ),
                   Tab(
                     icon: Image.asset(
-                      "assets/images/discover.gif",
-                      height: 30,
-                      width: 30,
-                    ),
-                    text: 'Explore',
-                  ),
-                  Tab(
-                    icon: Image.asset(
                       "assets/images/cart.gif",
                       height: 30,
-                      width: 30,
+                      width: 40,
                     ),
                     text: 'Cart',
                   ),
@@ -82,7 +73,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                   ),
                   Tab(
                     icon: Image.asset(
-                      "assets/images/account.gif",
+                      "assets/images/account.png",
                       height: 30,
                       width: 30,
                     ),
@@ -97,13 +88,10 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                 ShopPage(
                   currentUserId: widget.currentUserId,
                 ),
-                ExplorerPage(
-                  currentUserId: widget.currentUserId,
-                ),
                 CartPage(
                   currentUserId: widget.currentUserId,
                 ),
-                FavoritePage(
+                FavoriteProductPage(
                   currentUserId: widget.currentUserId,
                 ),
                 AccountPage(

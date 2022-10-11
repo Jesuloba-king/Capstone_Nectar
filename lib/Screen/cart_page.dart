@@ -1,71 +1,49 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:capstone/Screen/cart/components/body.dart';
+import 'package:capstone/Screen/cart/components/check_out_card.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({Key? key, required this.currentUserId}) : super(key: key);
+import '../../API_Services/models/cart.dart';
+import '../../widget/app_texts.dart';
+
+class CartPage extends StatelessWidget {
+  const CartPage({
+    Key? key,
+    required this.currentUserId,
+  }) : super(key: key);
   final String currentUserId;
-
-  @override
-  State<CartPage> createState() => _ShopPageState();
-}
-
-class _ShopPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        height: height,
-        width: width,
-        color: Colors.white,
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-                const Text(
-                  "Find Products",
-                  style: TextStyle(
-                    fontFamily: "Gilroy-ExtraBold",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(CupertinoIcons.location_solid),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Location",
-                      style: TextStyle(
-                        fontFamily: "Gilroy",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "Cart Page",
-                  style: TextStyle(fontSize: 50),
-                ),
-              ],
-            ),
-          ),
-        ),
+      appBar: buildAppBar(context),
+      body: Body(
+        currentUserId: currentUserId,
+      ),
+      bottomNavigationBar: CheckoutCard(
+        currentUserId: currentUserId,
+      ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Column(
+        children: [
+          AppText(
+              text: "Your Cart",
+              fontSize: Adaptive.sp(18),
+              color: Colors.red,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w600),
+          AppText(
+              text: "${demoCarts.length} items",
+              fontSize: Adaptive.sp(18),
+              color: Colors.black,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w600),
+        ],
       ),
     );
   }

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "185037747326-gnhfmk61brfmq74ca2oikrlmg27lbvbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.nectarapp",
+            "certificate_hash": "a4ad439db28947fb41f3b6a13e6f4a2024e1a40b"
+          }
+        },
+        {
           "client_id": "185037747326-su37dqa5rueqcdup506cmeo6t9al0q71.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -42,6 +50,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "185037747326-t6dj54nt59jidur0s047qapa3vno2fua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.capstoneApp",
+            "certificate_hash": "a4ad439db28947fb41f3b6a13e6f4a2024e1a40b"
+          }
+        },
         {
           "client_id": "185037747326-su37dqa5rueqcdup506cmeo6t9al0q71.apps.googleusercontent.com",
           "client_type": 3
