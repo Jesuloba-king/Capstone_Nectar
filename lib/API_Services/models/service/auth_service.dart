@@ -46,6 +46,9 @@ class AuthService {
         phoneNo: "",
         profilePicture: "",
         datePublished: formattedDate,
+        timestamp: Timestamp.fromDate(
+          DateTime.now(),
+        ),
       );
       signedInUser.updateEmail(email);
       _fireStore.collection('Users').doc(signedInUser.uid).set(modal.toJson());
@@ -88,6 +91,9 @@ class AuthService {
       phoneNo: "",
       profilePicture: "",
       datePublished: formattedDate,
+      timestamp: Timestamp.fromDate(
+        DateTime.now(),
+      ),
     );
     _fireStore.collection('Users').doc(userId).set(modal.toJson());
   }
@@ -105,15 +111,20 @@ class AuthService {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    userId = credential.idToken!;
+    User? user = _auth.currentUser!;
+    userId = user.uid;
     bool exist = await userExists(userId);
     if (exist) {
-      userId = credential.idToken!;
+      userId = user.uid;
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } else {
       google(userId, googleUser!.email);
       return await FirebaseAuth.instance.signInWithCredential(credential);
     }
     // Once signed in, return the UserCredential
+  }
+
+  static Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

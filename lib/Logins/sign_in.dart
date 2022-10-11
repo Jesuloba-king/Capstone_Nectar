@@ -5,6 +5,7 @@ import 'package:capstone/utilities/helper_functions.dart';
 import 'package:capstone/widget/app_buttons.dart';
 import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../API_Services/models/service/auth_service.dart';
@@ -243,16 +244,47 @@ class _LoginPageState extends State<SignInPage> {
                                   debugPrint("Email: ${_email.text}");
                                   debugPrint("Password: ${_password.text}");
 
-                                  bool isValid = await AuthService.login(
-                                      _email.text, _password.text);
-                                  if (isValid) {
+                                  var connectivityResult = await (Connectivity()
+                                      .checkConnectivity());
+                                  if (connectivityResult ==
+                                          ConnectivityResult.mobile ||
+                                      connectivityResult ==
+                                          ConnectivityResult.wifi) {
+                                    bool isValid = await AuthService.login(
+                                        _email.text, _password.text);
+                                    if (isValid) {
+                                      String userId = AuthService.userId;
+                                      if (userId.isNotEmpty) {
+                                        setState(() {
+                                          isProcessing = false;
+                                        });
+                                        navigateToRoute(
+                                            context,
+                                            HomeScreenPage(
+                                              currentUserId: userId,
+                                            ));
+                                      } else {
+                                        return;
+                                      }
+                                    } else {
+                                      setState(() {
+                                        isProcessing = false;
+                                      });
+                                      showInfoAlertWithAction(
+                                          context,
+                                          "Invalid User",
+                                          "Incorrect Email or Password",
+                                          () {});
+                                    }
+                                  } else {
                                     setState(() {
                                       isProcessing = false;
                                     });
-                                    navigateToRoute(
+                                    showInfoAlertWithAction(
                                         context,
-                                        const HomeScreenPage(
-                                            currentUserId: ""));
+                                        "Network Connection",
+                                        "No Internet Connection",
+                                        () {});
                                   }
                                 }
                               },

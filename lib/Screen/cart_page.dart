@@ -13,6 +13,7 @@ class CartPage extends StatelessWidget {
     required this.currentUserId,
   }) : super(key: key);
   final String currentUserId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

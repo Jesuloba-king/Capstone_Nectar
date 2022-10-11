@@ -5,11 +5,14 @@
         "creditcard",
         "Deleivery",
         "Favourite",
+        "Flutterwave",
         "formkey",
         "glap",
         "modol",
+        "Mpesa",
         "prefs",
-        "scaffoldkey"
+        "scaffoldkey",
+        "USSD"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
