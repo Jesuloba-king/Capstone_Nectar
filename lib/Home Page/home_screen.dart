@@ -88,7 +88,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              "assets/images/account.gif",
+              "assets/images/account.png",
               height: 50,
               width: 50,
             ),

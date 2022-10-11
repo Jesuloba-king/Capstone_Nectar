@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MensClothingPage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('ELectronics'),
+        title: const Text('Electronics'),
         elevation: 0,
         actions: <Widget>[
           IconButton(

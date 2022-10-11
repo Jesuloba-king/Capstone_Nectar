@@ -59,7 +59,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                     icon: Image.asset(
                       "assets/images/cart.gif",
                       height: 30,
-                      width: 30,
+                      width: 40,
                     ),
                     text: 'Cart',
                   ),
@@ -73,7 +73,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                   ),
                   Tab(
                     icon: Image.asset(
-                      "assets/images/account.gif",
+                      "assets/images/account.png",
                       height: 30,
                       width: 30,
                     ),

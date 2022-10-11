@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+// import 'Screen/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +61,7 @@ class _SplashScreenState extends State<SplashScreen1> {
               end: Alignment.bottomRight,
               colors: [AppColors.primary, AppColors.primary])),
       child: EasySplashScreen(
+        // navigator: const HomeScreenPage(currentUserId: '',),
         navigator: const SignInPage(),
         durationInSeconds: 5,
         loaderColor: Colors.red,
