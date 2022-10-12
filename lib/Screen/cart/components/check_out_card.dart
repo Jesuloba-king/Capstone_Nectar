@@ -97,8 +97,6 @@ class CheckoutCard extends StatelessWidget {
                     child: appButton(
                       onPressed: () async {
                         // await payWithCard();
-                        CartModelService().chargeCard(
-                            amount: amountTotal, context: context, email: '');
                       },
                       btnColor: AppColors.primary,
                       child: AppText(

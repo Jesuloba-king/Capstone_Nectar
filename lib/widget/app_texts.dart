@@ -9,6 +9,7 @@ Text AppText({
   FontWeight? fontWeight,
   FontStyle? fontStyle,
   TextAlign? textAlign,
+  TextDecoration? decoration,
 }) {
   return Text(text,
       textAlign: textAlign,
@@ -18,5 +19,6 @@ Text AppText({
         fontFamily: "Gilroy",
         fontStyle: fontStyle ?? FontStyle.normal,
         fontWeight: fontWeight ?? FontWeight.w400,
+        decoration: decoration ?? TextDecoration.none,
       ));
 }

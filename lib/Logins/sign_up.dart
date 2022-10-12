@@ -319,6 +319,71 @@ class _LoginPageState extends State<SignUpPage> {
                             ),
                           ),
                           Space.spacerH50,
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Checkbox(
+                                  checkColor: AppColors.white,
+                                  activeColor: AppColors.primary,
+                                  value: isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isChecked = value!;
+                                    });
+                                  },
+                                ),
+                                Row(
+                                  children: [
+                                    AppText(
+                                        text: "I Agree to the",
+                                        textAlign: TextAlign.center,
+                                        fontSize: Adaptive.sp(12),
+                                        color: Colors.white,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w600),
+                                    GestureDetector(
+                                      onTap: () {
+                                        urlString(
+                                            "https://www.openheartrecruiter.com/Home/TermsOfService");
+                                      },
+                                      child: AppText(
+                                          text: "Terms and Conditions",
+                                          decoration: TextDecoration.underline,
+                                          textAlign: TextAlign.center,
+                                          fontSize: Adaptive.sp(12),
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    AppText(
+                                        text: "&",
+                                        textAlign: TextAlign.center,
+                                        fontSize: Adaptive.sp(12),
+                                        color: Colors.white,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w600),
+                                    GestureDetector(
+                                      onTap: () {
+                                        urlString(
+                                            "https://www.openheartrecruiter.com/Home/Privacy");
+                                      },
+                                      child: AppText(
+                                          text: "Privacy Policy",
+                                          textAlign: TextAlign.center,
+                                          decoration: TextDecoration.underline,
+                                          fontSize: Adaptive.sp(12),
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Space.spacerH50,
                           appButton(
                               onPressed: () async {
                                 _focusEmail.unfocus();

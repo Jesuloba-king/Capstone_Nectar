@@ -10,7 +10,6 @@ import 'package:capstone/widget/colors.dart';
 import 'package:capstone/widget/spacer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:capstone/utilities/helper_functions.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -40,16 +39,11 @@ class _BodyState extends State<Body> {
   dynamic amountTotal = 0;
   String totalAmount = "";
   int payTotal = 0;
-  String publicKeyTest =
-      'pk_test_ieu49ej839u984urenewuwe06eishra'; //pass in the public test key obtained from paystack dashboard here
-
-  final plugin = PaystackPlugin();
 
   @override
   void initState() {
     super.initState();
     //initialize the publicKey
-    plugin.initialize(publicKey: publicKeyTest);
     _initRetrieval();
     // _intTotal();
   }
@@ -60,58 +54,13 @@ class _BodyState extends State<Body> {
     final data = await service.retrieveCart(widget.currentUserId);
     setState(() {
       retrieveCartList = data;
-      amountTotal =
-          retrieveCartList.map<dynamic>((e) => e.price).reduce((a, b) => a + b);
+      amountTotal = retrieveCartList
+          .map<dynamic>((e) => e.price)
+          .reduce((a, b) => a + b)
+          .toString();
       // payTotal = int.parse(amountTotal);
     });
   }
-
-  // _intTotal() {
-  //   int totalScores = 0;
-  //   for (var element in retrieveCartList) {
-  //     totalScores += int.parse(element.price);
-  //     setState(() {
-  //       amountTotal = retrieveCartList
-  //           .map<int>((e) => int.parse(e.price))
-  //           .reduce((a, b) => a + b);
-  //     });
-  //   }
-  //   return totalScores;
-  // }
-
-  // String _getReference() {
-  //   var platform = (Platform.isIOS) ? 'iOS' : 'Android';
-  //   final thisDate = DateTime.now().millisecondsSinceEpoch;
-  //   return 'ChargedFrom${platform}_$thisDate';
-  // }
-
-  // chargeCard(
-  //     {required BuildContext context,
-  //     required int amount,
-  //     required String email}) async {
-  //   var charge = Charge()
-  //     ..amount = amount *
-  //         100 //the money should be in kobo hence the need to multiply the value by 100
-  //     ..reference = _getReference()
-  //     ..putCustomField('custom_id',
-  //         '846gey6w') //to pass extra parameters to be retrieved on the response from Paystack
-  //     ..email = email;
-
-  //   CheckoutResponse response = await plugin.checkout(
-  //     context,
-  //     method: CheckoutMethod.card,
-  //     charge: charge,
-  //   );
-
-  //   //check if the response is true or not
-  //   if (response.status == true) {
-  //     //you can send some data from the response to an API or use webhook to record the payment on a database
-  //     debugPrint('Payment was successful!!!');
-  //   } else {
-  //     //the payment wasn't successful or the user cancelled the payment
-  //     debugPrint('Payment Failed!!!');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +203,7 @@ class _BodyState extends State<Body> {
                   ),
                 );
               }
+
               return ListView.builder(
                 itemCount: retrieveCartList.length,
                 itemBuilder: (context, index) => Padding(

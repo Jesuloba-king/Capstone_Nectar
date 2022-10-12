@@ -1,4 +1,5 @@
 import 'package:capstone/API_Services/models/user_model.dart' as model;
+import 'package:capstone/API_Services/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,20 @@ class AuthService {
       debugPrint(e.toString());
       return false;
     }
+  }
+
+  static void updateProfilePics(UserModel user) async {
+    _fireStore.collection('Users').doc(user.uid).update({
+      "ProfilePicture": user.profilePicture,
+    });
+    result!.updatePhotoURL(user.profilePicture);
+  }
+
+  static void updateName(UserModel user) async {
+    _fireStore.collection('Users').doc(user.uid).update({
+      "Name": user.name,
+    });
+    result!.updatePhotoURL(user.profilePicture);
   }
 
   static Future<bool> forgotPassword(
