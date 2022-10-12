@@ -72,7 +72,7 @@ class _HomeScreenStatePage extends State<HomeScreenPage> {
                 height: width / 6.5,
                 width: MediaQuery.of(context).size.width,
                 child: TabBar(
-                  indicatorColor: Colors.grey,
+                  indicatorColor: Colors.white,
                   unselectedLabelStyle: const TextStyle(color: Colors.white),
                   labelColor: Colors.black,
                   labelStyle: TextStyle(
