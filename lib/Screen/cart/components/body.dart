@@ -36,7 +36,7 @@ class _BodyState extends State<Body> {
   bool isTestMode = true;
   final pbk = "FLWPUBK_TEST";
 
-  dynamic amountTotal = 0;
+  double amountTotal = 0.0;
   String totalAmount = "";
   int payTotal = 0;
 
@@ -54,10 +54,11 @@ class _BodyState extends State<Body> {
     final data = await service.retrieveCart(widget.currentUserId);
     setState(() {
       retrieveCartList = data;
-      amountTotal = retrieveCartList
-          .map<dynamic>((e) => e.price)
-          .reduce((a, b) => a + b)
-          .toString();
+      amountTotal = retrieveCartList.isEmpty
+          ? 0
+          : retrieveCartList
+              .map<double>((e) => double.parse(e.price))
+              .reduce((a, b) => a + b);
       // payTotal = int.parse(amountTotal);
     });
   }
@@ -142,7 +143,7 @@ class _BodyState extends State<Body> {
                           navigateToRoute(
                               context,
                               PaymentPage(
-                                  amount: amountTotal,
+                                  amount: "$amountTotal",
                                   email: user.email!,
                                   name: ""));
                         },
