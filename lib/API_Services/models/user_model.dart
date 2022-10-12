@@ -6,6 +6,7 @@ class UserModel {
   final String? name;
   final String? email;
   final String? phoneNo;
+  final String? address;
   final String? profilePicture;
   final String? datePublished;
   final Timestamp? timestamp;
@@ -16,6 +17,7 @@ class UserModel {
     this.name,
     this.email,
     this.phoneNo,
+    this.address,
     this.profilePicture,
     this.datePublished,
     this.timestamp,
@@ -29,6 +31,7 @@ class UserModel {
       name: snapshot["Name"] ?? "",
       email: snapshot["Email"] ?? "",
       phoneNo: snapshot["PhoneNo"] ?? "",
+      address: snapshot["Address"] ?? "",
       profilePicture: snapshot["ProfilePicture"] ?? "",
       datePublished: snapshot["DatePublished"] ?? "",
       timestamp: snapshot["Timestamp"] ?? "",
@@ -41,6 +44,7 @@ class UserModel {
         "Name": name,
         "Email": email,
         "PhoneNo": phoneNo,
+        "Address": address,
         "ProfilePicture": profilePicture,
         "DatePublished": datePublished,
         "Timestamp": timestamp,

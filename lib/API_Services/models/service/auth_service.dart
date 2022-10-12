@@ -70,6 +70,8 @@ class AuthService {
   static void updateName(UserModel user) async {
     _fireStore.collection('Users').doc(user.uid).update({
       "Name": user.name,
+      "PhoneNo": user.phoneNo,
+      "Address": user.address,
     });
     result!.updatePhotoURL(user.profilePicture);
   }

@@ -1,11 +1,17 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:capstone/API_Services/models/service/auth_service.dart';
 import 'package:capstone/API_Services/models/service/file_storage.dart';
 import 'package:capstone/API_Services/models/user_model.dart';
 import 'package:capstone/Logins/sign_in.dart';
 import 'package:capstone/Screen/home_screen.dart';
+import 'package:capstone/utilities/helper_functions.dart';
+import 'package:capstone/widget/colors.dart';
+import 'package:capstone/widget/spacer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -93,7 +99,7 @@ class _ShopPageState extends State<AccountPage> {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                    color: Colors.grey,
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(20)),
                                 width: width,
                                 child: Column(
@@ -186,7 +192,14 @@ class _ShopPageState extends State<AccountPage> {
                                                       fontWeight:
                                                           FontWeight.w500),
                                               InkWell(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    navigateToRoute(
+                                                        context,
+                                                        MyDetailsPage(
+                                                          currentUserId: widget
+                                                              .currentUserId,
+                                                        ));
+                                                  },
                                                   child: Image.asset(
                                                     'assets/icons/pencil.png',
                                                     height: 20,
@@ -207,11 +220,9 @@ class _ShopPageState extends State<AccountPage> {
                                 ),
                               ),
                             ),
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
                             ListTile(
                               leading: const Icon(
@@ -234,11 +245,9 @@ class _ShopPageState extends State<AccountPage> {
                                 }));
                               },
                             ),
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
                             //Orders
                             ListTile(
@@ -254,18 +263,16 @@ class _ShopPageState extends State<AccountPage> {
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold),
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    //Details class is at the end of this page....
-                                    return const Details();
-                                  }));
+                                  navigateToRoute(
+                                      context,
+                                      MyDetailsPage(
+                                        currentUserId: widget.currentUserId,
+                                      ));
                                 }),
 
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
 
                             ListTile(
@@ -338,11 +345,9 @@ class _ShopPageState extends State<AccountPage> {
                             ),
 
                             //Help Column...
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
                             ListTile(
                               onTap: () {
@@ -395,11 +400,9 @@ class _ShopPageState extends State<AccountPage> {
                             ),
 
                             // About Column...
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
                             ListTile(
                               onTap: () {
@@ -433,11 +436,9 @@ class _ShopPageState extends State<AccountPage> {
                                   fontWeight: FontWeight.bold),
                             ),
 
-                            const Expanded(
-                              child: Divider(
-                                indent: 1,
-                                color: Colors.black,
-                              ),
+                            const Divider(
+                              indent: 1,
+                              color: Colors.black,
                             ),
 
                             // LOG OUT BUTTON...
@@ -459,69 +460,50 @@ class _ShopPageState extends State<AccountPage> {
                                           color: const Color(0xffF2F3F2),
                                         ),
                                         child: GestureDetector(
-                                          onTap: () {
-                                            showCupertinoDialog(
+                                          onTap: () async {
+                                            await showDialog<bool>(
                                                 context: context,
-                                                builder:
-                                                    (BuildContext context) {
+                                                builder: (context) {
                                                   return CupertinoAlertDialog(
                                                     title: AppText(
-                                                        text: "Exit App",
-                                                        fontSize:
-                                                            Adaptive.sp(20),
-                                                        color: Colors.black,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                    content: AppText(
-                                                        text:
-                                                            "Do you wish to logout?",
+                                                        text: "Sign Out",
                                                         fontSize:
                                                             Adaptive.sp(18),
                                                         color: Colors.black,
                                                         fontStyle:
                                                             FontStyle.normal,
                                                         fontWeight:
-                                                            FontWeight.w500),
+                                                            FontWeight.bold),
+                                                    content: AppText(
+                                                        text:
+                                                            "Do you want to sign out?",
+                                                        fontSize:
+                                                            Adaptive.sp(18),
+                                                        color: Colors.black,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                     actions: [
-                                                      CupertinoButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: AppText(
-                                                            text: "cancel",
-                                                            fontSize:
-                                                                Adaptive.sp(18),
-                                                            color: Colors.black,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      CupertinoButton(
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) {
-                                                            return const SignInPage();
-                                                          }));
-                                                        },
-                                                        child: AppText(
-                                                            text: "Proceed",
-                                                            fontSize:
-                                                                Adaptive.sp(18),
-                                                            color: Colors.pink,
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
+                                                      CupertinoDialogAction(
+                                                          child: const Text(
+                                                              "Proceed"),
+                                                          onPressed: () async {
+                                                            await FirebaseAuth
+                                                                .instance
+                                                                .signOut();
+                                                            navigateAndRemoveUntilRoute(
+                                                                context,
+                                                                const SignInPage());
+                                                          }),
+                                                      CupertinoDialogAction(
+                                                          child: const Text(
+                                                              "Cancel"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(false);
+                                                          }),
                                                     ],
                                                   );
                                                 });
@@ -559,73 +541,344 @@ class _ShopPageState extends State<AccountPage> {
 }
 
 //Delivery
-class Details extends StatelessWidget {
-  const Details({Key? key}) : super(key: key);
+class MyDetailsPage extends StatefulWidget {
+  const MyDetailsPage({Key? key, required this.currentUserId})
+      : super(key: key);
+  final String currentUserId;
+  @override
+  _EditProfilePageState createState() => _EditProfilePageState();
+}
 
-  get address => null;
+class _EditProfilePageState extends State<MyDetailsPage> {
+  final _formkey = GlobalKey<FormState>();
+
+  late TextEditingController _name;
+  late TextEditingController _address;
+  late TextEditingController _phoneNo;
+
+  final _focusName = FocusNode();
+  final _focusAddress = FocusNode();
+  final _focusPhoneNo = FocusNode();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: AppText(
-            text: "My Details",
-            fontSize: Adaptive.sp(23),
-            color: Colors.black,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w500),
-        elevation: 0.0,
-        backgroundColor: Colors.green[100],
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              CupertinoIcons.back,
-            )),
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(15),
-          bottomLeft: Radius.circular(15),
-        )),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0),
-            child: Container(
-              height: Adaptive.h(20.5),
-              width: Adaptive.w(200),
-              color: Colors.lightGreen[100],
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Column(
-                  children: [
-                    AppText(
-                        text: "Full name",
-                        fontSize: Adaptive.sp(20),
-                        color: Colors.black,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold),
-                    AppText(
-                        text: "Delivery Address",
-                        fontSize: Adaptive.sp(18),
-                        color: Colors.black,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500),
-                    AppText(
-                        text: "Phone number",
-                        fontSize: Adaptive.sp(18),
-                        color: Colors.black,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500),
+  void initState() {
+    _name = TextEditingController();
+    _address = TextEditingController();
+    _phoneNo = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _address.dispose();
+    _phoneNo.dispose();
+    super.dispose();
+  }
+
+  static final _fireStore = FirebaseFirestore.instance;
+  Widget create() {
+    final key = GlobalKey<ScaffoldMessengerState>();
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Container(
+      height: height,
+      width: width,
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color: Colors.white),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      child: FutureBuilder(
+        future: _fireStore.collection('Users').doc(widget.currentUserId).get(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.cyan),
+              ),
+            );
+          }
+          UserModel userModel = UserModel.fromSnap(snapshot.data ?? "");
+
+          return Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () async {
+                _focusName.unfocus();
+                _focusAddress.unfocus();
+                _focusPhoneNo.unfocus();
+                if (_formkey.currentState!.validate()) {
+                  setState(() {});
+                  debugPrint("Address: ${_name.text}");
+                  debugPrint("Nationality: ${_phoneNo.text}");
+                  debugPrint("Sex: ${_address.text}");
+                  UserModel user = UserModel(
+                    uid: widget.currentUserId,
+                    name: _name.text.trim(),
+                    address: _address.text.trim(),
+                    phoneNo: _phoneNo.text.trim(),
+                  );
+                  AuthService.updateName(user);
+                  Navigator.pop(context);
+                }
+              },
+              backgroundColor: const Color(0xff010a3f),
+              label: Row(
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  AppText(
+                      text: "Update",
+                      textAlign: TextAlign.center,
+                      fontSize: Adaptive.sp(16),
+                      color: Colors.white,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w600),
+                  const Icon(
+                    Icons.navigate_next_sharp,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                ],
+              ),
+            ),
+            key: key,
+            backgroundColor: Colors.transparent,
+            body: Container(
+              color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  _focusName.unfocus();
+                  _focusAddress.unfocus();
+                  _focusPhoneNo.unfocus();
+                },
+                child: ListView(
+                  children: <Widget>[
+                    SizedBox(
+                      height: height * 0.009,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, top: 20),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                AppText(
+                                    text: "Back",
+                                    textAlign: TextAlign.center,
+                                    fontSize: Adaptive.sp(16),
+                                    color: Colors.black,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w600),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Center(
+                      child: AppText(
+                          text: "Update Profile",
+                          textAlign: TextAlign.center,
+                          fontSize: Adaptive.sp(18),
+                          color: Colors.black,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.only(top: 20, left: 20, right: 20),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(children: [
+                          Space.spacerH5,
+                          TextFormField(
+                              obscureText: false,
+                              focusNode: _focusName,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: userModel.name!.isNotEmpty
+                                  ? TextEditingController(text: userModel.name)
+                                  : _name,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Empty field";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              autocorrect: true,
+                              enableSuggestions: true,
+                              style: const TextStyle(
+                                // textStyle: textTheme.bodyText1,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontFamily: 'Gilroy',
+                              ),
+                              decoration: const InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: EdgeInsets.only(
+                                    top: 0, left: 10, right: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.account_box,
+                                  size: 25.0,
+                                  color: Colors.black,
+                                ),
+                                labelText: "Name",
+                                hintStyle: TextStyle(color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.black),
+                              )),
+                          Space.spacerH20,
+                          TextFormField(
+                              obscureText: false,
+                              focusNode: _focusPhoneNo,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: userModel.phoneNo!.isNotEmpty
+                                  ? TextEditingController(
+                                      text: userModel.phoneNo)
+                                  : _phoneNo,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Empty field";
+                                } else if (value.length != 11) {
+                                  return "Invalid Numbers";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              autocorrect: true,
+                              maxLength: 11,
+                              keyboardType: TextInputType.phone,
+                              style: const TextStyle(
+                                // textStyle: textTheme.bodyText1,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontFamily: 'Gilroy',
+                              ),
+                              decoration: const InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: EdgeInsets.only(
+                                    top: 0, left: 10, right: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.phone,
+                                  size: 25.0,
+                                  color: Colors.black,
+                                ),
+                                labelText: ' Mobile Number',
+                                hintStyle: TextStyle(color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.black),
+                              )),
+                          Space.spacerH20,
+                          TextFormField(
+                              obscureText: false,
+                              focusNode: _focusAddress,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: userModel.address!.isNotEmpty
+                                  ? TextEditingController(
+                                      text: userModel.address)
+                                  : _address,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Empty field";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              autocorrect: true,
+                              enableSuggestions: true,
+                              style: const TextStyle(
+                                // textStyle: textTheme.bodyText1,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontFamily: 'Gilroy',
+                              ),
+                              decoration: const InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                contentPadding: EdgeInsets.only(
+                                    top: 0, left: 10, right: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.home,
+                                  size: 25.0,
+                                  color: Colors.black,
+                                ),
+                                labelText: " Address",
+                                hintStyle: TextStyle(color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.black),
+                              )),
+                          Space.spacerH20,
+                        ]),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return create();
   }
 }
