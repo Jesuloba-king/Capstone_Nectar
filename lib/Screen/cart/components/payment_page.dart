@@ -210,7 +210,7 @@ class _MyHomePageState extends State<PaymentPage> {
     // ignore: unnecessary_null_comparison
     if (response != null) {
       showLoading(response.status!);
-      print("${response.toJson()}");
+      debugPrint("${response.toJson()}");
     } else {
       showLoading("No Response!");
     }

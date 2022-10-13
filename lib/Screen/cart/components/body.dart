@@ -9,6 +9,7 @@ import 'package:capstone/widget/app_texts.dart';
 import 'package:capstone/widget/colors.dart';
 import 'package:capstone/widget/spacer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:capstone/utilities/helper_functions.dart';
@@ -187,7 +188,7 @@ class _BodyState extends State<Body> {
                   ),
                 );
               }
-              if (snapshot.data.toString().isEmpty) {
+              if (snapshot.data!.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -196,6 +197,7 @@ class _BodyState extends State<Body> {
                       AppText(
                           text:
                               "No Item in Your Cart\n Items will appear as soon as you add them",
+                          textAlign: TextAlign.center,
                           fontSize: Adaptive.sp(18),
                           color: Colors.red,
                           fontStyle: FontStyle.normal,
@@ -245,13 +247,49 @@ class _BodyState extends State<Body> {
                               //  const Spacer(),
                               GestureDetector(
                                 onTap: () async {
-                                  setState(() {
-                                    retrieveCartList.removeAt(index);
-                                  });
-                                  CartModelService().deleteCart(
-                                    retrieveCartList[index].postId.toString(),
-                                    widget.currentUserId,
-                                  );
+                                  await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) {
+                                        return CupertinoAlertDialog(
+                                          title: AppText(
+                                              text: "Delete Item",
+                                              fontSize: Adaptive.sp(18),
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.bold),
+                                          content: AppText(
+                                              text:
+                                                  "Do you want to delete this item?",
+                                              fontSize: Adaptive.sp(14),
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w600),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                                child: const Text("Proceed"),
+                                                onPressed: () async {
+                                                  CartModelService().deleteCart(
+                                                    retrieveCartList[index]
+                                                        .postId
+                                                        .toString(),
+                                                    widget.currentUserId,
+                                                  );
+                                                  setState(() {
+                                                    retrieveCartList
+                                                        .removeAt(index);
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                  });
+                                                }),
+                                            CupertinoDialogAction(
+                                                child: const Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(false);
+                                                }),
+                                          ],
+                                        );
+                                      });
                                 },
                                 child: Container(
                                   width: 50,
